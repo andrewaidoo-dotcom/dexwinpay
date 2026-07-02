@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script src="./ds-base.js"></script>
+<script src="./app-state.js"></script>
+<style>
+  * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+</style>
+</helmet>
+<div style="display:flex;height:100vh;overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <dc-import name="Sidebar" active="clients" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:var(--bg-secondary);">
+    <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);">
+      <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-body);font-size:15px;font-weight:600;">
+        <a href="Clients Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-secondary);">Clients</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <span style="color:var(--brand-700);">Add a client</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;">
+        <div style="display:flex;align-items:center;gap:9px;color:var(--fg-secondary);font-size:15px;font-weight:500;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          {{ today }}
+        </div>
+        <span role="button" aria-label="Notifications" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+        </span>
+      </div>
+    </header>
+
+    <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 40px;background:#fff;border-bottom:1px solid var(--border-secondary);">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <a href="Clients Page.dc.html" aria-label="Back" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);background:#fff;color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </a>
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:24px;line-height:32px;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a client</h2>
+      </div>
+      <a href="Clients Page.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+        Save &amp; exit
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+      </a>
+    </div>
+
+    <div style="flex-shrink:0;background:var(--bg-primary);border-bottom:1px solid var(--border-secondary);padding:18px 40px;">
+      <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:0;">
+      <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+        <sc-if value="{{ st.notFirst }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;height:2px;background:{{ st.lineBg }};margin:0 10px;border-radius:999px;"></div>
+        </sc-if>
+        <div role="button" onClick="{{ st.onGo }}" style="display:flex;align-items:center;gap:9px;cursor:{{ st.cursor }};flex-shrink:0;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:{{ st.dotBg }};color:{{ st.dotFg }};border:1.5px solid {{ st.dotBd }};font-family:var(--font-display);font-weight:800;font-size:13px;transition:background 120ms ease;">
+            <sc-if value="{{ st.done }}" hint-placeholder-val="{{ false }}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </sc-if>
+            <sc-if value="{{ st.notDone }}" hint-placeholder-val="{{ true }}">{{ st.n }}</sc-if>
+          </span>
+          <span style="font-size:13.5px;font-weight:700;color:{{ st.labelColor }};white-space:nowrap;">{{ st.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <main style="flex:1;overflow-y:auto;padding:36px 40px 80px;box-sizing:border-box;">
+    <div style="max-width:680px;margin:0 auto;">
+
+      <!-- STEP 1 · Client & approver -->
+      <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:26px;line-height:34px;letter-spacing:-0.02em;margin:0 0 8px;">Client &amp; approver</h2>
+        <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 28px;">The company {{ firmName }} will run payroll for, and the person there who signs off each run.</p>
+
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;">
+          <div style="margin-bottom:24px;">
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Company Name" required="{{ true }}" value="{{ fName }}" on-change="{{ onName }}" error="{{ eName }}" placeholder="eg. “Kente Textiles Ltd”" size="lg" hint-size="100%,76px"></x-import>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Industry</label>
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Select" size="lg" value="{{ fIndustry }}" on-change="{{ onIndustry }}" hint-size="100%,50px">
+                <option value="">Select industry</option>
+                <option value="Retail">Retail</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Hospitality">Hospitality</option>
+                <option value="Financial services">Financial services</option>
+                <option value="Technology">Technology</option>
+                <option value="Logistics">Logistics</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Education">Education</option>
+                <option value="Construction">Construction</option>
+                <option value="NGO / non-profit">NGO / non-profit</option>
+                <option value="Other">Other</option>
+              </x-import>
+            </div>
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Location" value="{{ fLocation }}" on-change="{{ onLocation }}" placeholder="eg. “Accra”" size="lg" hint-size="100%,76px"></x-import>
+          </div>
+
+          <div style="border-top:1px solid var(--border-secondary);margin-top:28px;padding-top:24px;">
+            <h3 style="font-family:var(--font-display);font-size:16px;font-weight:800;letter-spacing:-0.01em;margin:0 0 4px;">Payroll approver</h3>
+            <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0 0 20px;">They don't get a login — each payroll run emails them a link to approve or reject with comments.</p>
+            <div style="margin-bottom:20px;">
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Full Name" required="{{ true }}" value="{{ fContactName }}" on-change="{{ onContactName }}" error="{{ eContactName }}" placeholder="eg. “Akua Mensah”" size="lg" hint-size="100%,76px"></x-import>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Email" type="email" required="{{ true }}" value="{{ fContactEmail }}" on-change="{{ onContactEmail }}" error="{{ eContactEmail }}" placeholder="eg. “akua@kente.com.gh”" size="lg" hint-size="100%,76px"></x-import>
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Phone Number" type="tel" value="{{ fContactPhone }}" on-change="{{ onContactPhone }}" placeholder="eg. “(54) 000-0000”" size="lg" hint-size="100%,76px"></x-import>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- STEP 2 · Employees -->
+      <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:26px;line-height:34px;letter-spacing:-0.02em;margin:0 0 8px;">{{ clientName }}'s employees</h2>
+        <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 28px;">Import their staff list from a spreadsheet, or add people one by one. You can always finish the roster later from the People page.</p>
+
+        <div style="display:flex;gap:4px;background:var(--gray-100);border-radius:999px;padding:4px;margin-bottom:20px;width:fit-content;">
+          <button onClick="{{ pickModeOne }}" style="padding:9px 20px;font-family:var(--font-body);font-size:14px;font-weight:700;border:none;border-radius:999px;cursor:pointer;background:{{ modeOneBg }};color:{{ modeOneFg }};box-shadow:{{ modeOneShadow }};transition:background 120ms ease;">Add one by one</button>
+          <button onClick="{{ pickModeImport }}" style="padding:9px 20px;font-family:var(--font-body);font-size:14px;font-weight:700;border:none;border-radius:999px;cursor:pointer;background:{{ modeImpBg }};color:{{ modeImpFg }};box-shadow:{{ modeImpShadow }};transition:background 120ms ease;">Import spreadsheet</button>
+        </div>
+
+        <sc-if value="{{ modeOne }}" hint-placeholder-val="{{ true }}">
+          <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:24px 28px;margin-bottom:20px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">First name <span style="color:var(--error-600);">*</span></label>
+                <input value="{{ empFirst }}" onInput="{{ onEmpFirst }}" placeholder="eg. Kwame" style="width:100%;box-sizing:border-box;padding:11px 14px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
+              </div>
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Surname <span style="color:var(--error-600);">*</span></label>
+                <input value="{{ empLast }}" onInput="{{ onEmpLast }}" placeholder="eg. Owusu" style="width:100%;box-sizing:border-box;padding:11px 14px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:18px;">
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Employment type</label>
+                <select value="{{ empType }}" onChange="{{ onEmpType }}" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:14.5px;color:var(--fg-primary);outline:none;background:#fff;cursor:pointer;">
+                  <option value="Full time">Full time</option>
+                  <option value="Part time">Part time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Temporary">Casual</option>
+                  <option value="Internship">Intern</option>
+                  <option value="National service">National service</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Basic salary <span style="color:var(--error-600);">*</span></label>
+                <div style="position:relative;">
+                  <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--fg-quaternary);pointer-events:none;">GH₵</span>
+                  <input value="{{ empBasic }}" onInput="{{ onEmpBasic }}" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:11px 12px 11px 48px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;font-variant-numeric:tabular-nums;">
+                </div>
+              </div>
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">SSNIT member</label>
+                <select value="{{ empSsnit }}" onChange="{{ onEmpSsnit }}" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:14.5px;color:var(--fg-primary);outline:none;background:#fff;cursor:pointer;">
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;">
+              <button onClick="{{ addEmp }}" style="display:inline-flex;align-items:center;gap:9px;padding:11px 22px;font-family:var(--font-body);font-weight:700;font-size:14.5px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;opacity:{{ addEmpOpacity }};transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+                Add employee
+              </button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ modeImport }}" hint-placeholder-val="{{ false }}">
+          <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;margin-bottom:20px;">
+            <sc-if value="{{ noParse }}" hint-placeholder-val="{{ true }}">
+              <label style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:34px 24px;border:1.5px dashed var(--border-primary);border-radius:16px;cursor:pointer;text-align:center;transition:background 120ms ease;" style-hover="background:var(--brand-25);">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:var(--radius-full);background:var(--brand-50);color:var(--brand-600);">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                </span>
+                <span>
+                  <span style="display:block;font-size:15px;font-weight:700;color:var(--brand-700);">Upload their staff list</span>
+                  <span style="display:block;font-size:13.5px;color:var(--fg-tertiary);margin-top:3px;">CSV or Excel (.xlsx) — a PAYE schedule works too</span>
+                </span>
+                <input type="file" accept=".csv,.xlsx" onChange="{{ onFile }}" style="display:none;">
+              </label>
+              <sc-if value="{{ parseError }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:14px;padding:12px 16px;background:var(--error-50);border:1px solid var(--error-200);border-radius:12px;font-size:13.5px;font-weight:600;color:var(--error-700);">{{ parseErrorMsg }}</div>
+              </sc-if>
+            </sc-if>
+            <sc-if value="{{ hasParse }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--success-50);color:var(--success-600);">
+                  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                </span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:block;font-size:15px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ parseFileName }}</span>
+                  <span style="display:block;font-size:13.5px;color:var(--fg-tertiary);">{{ parseSummary }}</span>
+                </span>
+                <button onClick="{{ clearParse }}" style="flex-shrink:0;padding:9px 16px;font-family:var(--font-body);font-size:13.5px;font-weight:700;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Change file</button>
+                <button onClick="{{ importParsed }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:9px 18px;font-family:var(--font-body);font-size:13.5px;font-weight:700;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">{{ importCta }}</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hasRoster }}" hint-placeholder-val="{{ false }}">
+          <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:var(--gray-50);border-bottom:1px solid var(--border-secondary);">
+              <span style="font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--fg-quaternary);">Roster · {{ rosterCount }}</span>
+              <span style="font-size:13px;font-weight:600;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ rosterTotal }} / month basic</span>
+            </div>
+            <sc-for list="{{ roster }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:13px;padding:12px 22px;border-bottom:1px solid var(--border-tertiary);">
+                <span style="width:34px;height:34px;flex-shrink:0;border-radius:999px;background:var(--brand-50);color:var(--brand-700);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:12px;">{{ r.init }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:block;font-size:14.5px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.name }}</span>
+                  <span style="display:block;font-size:12.5px;color:var(--fg-tertiary);">{{ r.meta }}</span>
+                </span>
+                <span style="flex-shrink:0;font-size:14px;font-weight:700;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ r.basic }}</span>
+                <span role="button" aria-label="Remove" onClick="{{ r.onRemove }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;cursor:pointer;color:var(--error-500);transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                </span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <!-- STEP 3 · Pay policies -->
+      <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:26px;line-height:34px;letter-spacing:-0.02em;margin:0 0 8px;">{{ clientName }}'s pay policies</h2>
+        <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 28px;">Recurring allowances and deductions that apply to every payslip — transport allowance, staff welfare dues, and the like. They apply to all employees; fine-tune per person later in Payroll.</p>
+
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:24px 28px;margin-bottom:20px;">
+          <h3 style="font-family:var(--font-display);font-size:16px;font-weight:800;letter-spacing:-0.01em;margin:0 0 2px;">Pay additions</h3>
+          <p style="font-size:13.5px;line-height:20px;color:var(--fg-tertiary);margin:0 0 16px;">Allowances and benefits that increase take-home pay.</p>
+          <sc-for list="{{ additions }}" as="a" hint-placeholder-count="1">
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border-tertiary);">
+              <span style="flex:1;min-width:0;font-size:14.5px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ a.name }}</span>
+              <span style="flex-shrink:0;font-size:13.5px;font-weight:600;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ a.valueText }} · Monthly</span>
+              <span role="button" aria-label="Remove" onClick="{{ a.onRemove }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;cursor:pointer;color:var(--error-500);transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </span>
+            </div>
+          </sc-for>
+          <div style="display:flex;gap:10px;align-items:flex-end;padding-top:14px;flex-wrap:wrap;">
+            <div style="flex:2;min-width:160px;">
+              <label style="display:block;font-size:12.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:5px;">Name</label>
+              <input value="{{ addName }}" onInput="{{ onAddName }}" placeholder="eg. Transport allowance" style="width:100%;box-sizing:border-box;padding:10px 13px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);outline:none;background:#fff;">
+            </div>
+            <div style="flex-shrink:0;">
+              <label style="display:block;font-size:12.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:5px;">Amount</label>
+              <div style="display:flex;gap:0;">
+                <select value="{{ addMode }}" onChange="{{ onAddMode }}" style="box-sizing:border-box;padding:10px 8px;border:1px solid var(--border-primary);border-right:none;border-radius:10px 0 0 10px;font-family:var(--font-body);font-size:13.5px;color:var(--fg-secondary);outline:none;background:var(--gray-50);cursor:pointer;">
+                  <option value="fixed">GH₵</option>
+                  <option value="pct">% of basic</option>
+                </select>
+                <input value="{{ addValue }}" onInput="{{ onAddValue }}" inputmode="decimal" placeholder="0" style="width:100px;box-sizing:border-box;padding:10px 13px;border:1px solid var(--border-primary);border-radius:0 10px 10px 0;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);outline:none;background:#fff;font-variant-numeric:tabular-nums;">
+              </div>
+            </div>
+            <button onClick="{{ addAddition }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:7px;padding:10px 18px;font-family:var(--font-body);font-weight:700;font-size:13.5px;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);border-radius:var(--radius-full);cursor:pointer;opacity:{{ addAdditionOpacity }};transition:background 120ms ease;" style-hover="background:var(--brand-100);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+              Add
+            </button>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:24px 28px;">
+          <h3 style="font-family:var(--font-display);font-size:16px;font-weight:800;letter-spacing:-0.01em;margin:0 0 2px;">Pay deductions</h3>
+          <p style="font-size:13.5px;line-height:20px;color:var(--fg-tertiary);margin:0 0 16px;">Recurring amounts taken off payslips — dues, welfare contributions, and the like.</p>
+          <sc-for list="{{ deductions }}" as="d" hint-placeholder-count="1">
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border-tertiary);">
+              <span style="flex:1;min-width:0;font-size:14.5px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ d.name }}</span>
+              <span style="flex-shrink:0;font-size:12px;font-weight:700;color:{{ d.taxFg }};background:{{ d.taxBg }};padding:2px 9px;border-radius:999px;">{{ d.taxLabel }}</span>
+              <span style="flex-shrink:0;font-size:13.5px;font-weight:600;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ d.valueText }} · Monthly</span>
+              <span role="button" aria-label="Remove" onClick="{{ d.onRemove }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;cursor:pointer;color:var(--error-500);transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </span>
+            </div>
+          </sc-for>
+          <div style="display:flex;gap:10px;align-items:flex-end;padding-top:14px;flex-wrap:wrap;">
+            <div style="flex:2;min-width:140px;">
+              <label style="display:block;font-size:12.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:5px;">Name</label>
+              <input value="{{ dedName }}" onInput="{{ onDedName }}" placeholder="eg. Welfare dues" style="width:100%;box-sizing:border-box;padding:10px 13px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);outline:none;background:#fff;">
+            </div>
+            <div style="flex-shrink:0;">
+              <label style="display:block;font-size:12.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:5px;">Timing</label>
+              <select value="{{ dedTax }}" onChange="{{ onDedTax }}" style="box-sizing:border-box;padding:10px 10px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:13.5px;color:var(--fg-secondary);outline:none;background:#fff;cursor:pointer;">
+                <option value="posttax">After tax</option>
+                <option value="pretax">Before tax</option>
+              </select>
+            </div>
+            <div style="flex-shrink:0;">
+              <label style="display:block;font-size:12.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:5px;">Amount</label>
+              <div style="display:flex;gap:0;">
+                <select value="{{ dedMode }}" onChange="{{ onDedMode }}" style="box-sizing:border-box;padding:10px 8px;border:1px solid var(--border-primary);border-right:none;border-radius:10px 0 0 10px;font-family:var(--font-body);font-size:13.5px;color:var(--fg-secondary);outline:none;background:var(--gray-50);cursor:pointer;">
+                  <option value="fixed">GH₵</option>
+                  <option value="pct">% of basic</option>
+                </select>
+                <input value="{{ dedValue }}" onInput="{{ onDedValue }}" inputmode="decimal" placeholder="0" style="width:90px;box-sizing:border-box;padding:10px 13px;border:1px solid var(--border-primary);border-radius:0 10px 10px 0;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);outline:none;background:#fff;font-variant-numeric:tabular-nums;">
+              </div>
+            </div>
+            <button onClick="{{ addDeduction }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:7px;padding:10px 18px;font-family:var(--font-body);font-weight:700;font-size:13.5px;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);border-radius:var(--radius-full);cursor:pointer;opacity:{{ addDeductionOpacity }};transition:background 120ms ease;" style-hover="background:var(--brand-100);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+              Add
+            </button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- STEP 4 · Loans & advances -->
+      <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:26px;line-height:34px;letter-spacing:-0.02em;margin:0 0 8px;">Loans &amp; advances</h2>
+        <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 28px;">Any staff loans or salary advances {{ clientName }} is already recovering. The monthly amount is deducted from each payslip until settled.</p>
+
+        <sc-if value="{{ noRosterForLoans }}" hint-placeholder-val="{{ false }}">
+          <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:32px 28px;text-align:center;">
+            <p style="font-size:14.5px;line-height:22px;color:var(--fg-tertiary);margin:0;">No employees on the roster yet — loans are tied to an employee. <span role="button" onClick="{{ goStep2 }}" style="color:var(--brand-700);font-weight:700;cursor:pointer;">Add employees</span> first, or skip this step.</p>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hasRosterForLoans }}" hint-placeholder-val="{{ true }}">
+          <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:24px 28px;margin-bottom:20px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Employee <span style="color:var(--error-600);">*</span></label>
+                <select value="{{ loanEmp }}" onChange="{{ onLoanEmp }}" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:14.5px;color:var(--fg-primary);outline:none;background:#fff;cursor:pointer;">
+                  <option value="">Select employee</option>
+                  <sc-for list="{{ loanEmpOptions }}" as="o" hint-placeholder-count="2">
+                    <option value="{{ o.id }}">{{ o.name }}</option>
+                  </sc-for>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Type</label>
+                <div style="display:flex;gap:8px;">
+                  <button onClick="{{ pickLoan }}" style="flex:1;padding:10px 12px;font-family:var(--font-body);font-size:13.5px;font-weight:700;border:1.5px solid {{ loanTypeBd }};color:{{ loanTypeFg }};background:{{ loanTypeBg }};border-radius:10px;cursor:pointer;transition:border-color 120ms ease;">Loan</button>
+                  <button onClick="{{ pickAdvance }}" style="flex:1;padding:10px 12px;font-family:var(--font-body);font-size:13.5px;font-weight:700;border:1.5px solid {{ advTypeBd }};color:{{ advTypeFg }};background:{{ advTypeBg }};border-radius:10px;cursor:pointer;transition:border-color 120ms ease;">Salary advance</button>
+                </div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:18px;">
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Monthly deduction <span style="color:var(--error-600);">*</span></label>
+                <div style="position:relative;">
+                  <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--fg-quaternary);pointer-events:none;">GH₵</span>
+                  <input value="{{ loanMonthly }}" onInput="{{ onLoanMonthly }}" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:11px 12px 11px 48px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;font-variant-numeric:tabular-nums;">
+                </div>
+              </div>
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Amount left <span style="color:var(--error-600);">*</span></label>
+                <div style="position:relative;">
+                  <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--fg-quaternary);pointer-events:none;">GH₵</span>
+                  <input value="{{ loanLeft }}" onInput="{{ onLoanLeft }}" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:11px 12px 11px 48px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;font-variant-numeric:tabular-nums;">
+                </div>
+              </div>
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Already repaid</label>
+                <div style="position:relative;">
+                  <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--fg-quaternary);pointer-events:none;">GH₵</span>
+                  <input value="{{ loanPaid }}" onInput="{{ onLoanPaid }}" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:11px 12px 11px 48px;border:1px solid var(--border-primary);border-radius:10px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;font-variant-numeric:tabular-nums;">
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;">
+              <button onClick="{{ addLoan }}" style="display:inline-flex;align-items:center;gap:9px;padding:11px 22px;font-family:var(--font-body);font-weight:700;font-size:14.5px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;opacity:{{ addLoanOpacity }};transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+                Add loan
+              </button>
+            </div>
+          </div>
+
+          <sc-if value="{{ hasLoans }}" hint-placeholder-val="{{ false }}">
+            <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;">
+              <sc-for list="{{ loans }}" as="l" hint-placeholder-count="1">
+                <div style="display:flex;align-items:center;gap:13px;padding:13px 22px;border-bottom:1px solid var(--border-tertiary);">
+                  <span style="flex:1;min-width:0;font-size:14.5px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ l.name }}</span>
+                  <span style="flex-shrink:0;font-size:12px;font-weight:700;color:{{ l.typeFg }};background:{{ l.typeBg }};padding:2px 10px;border-radius:999px;">{{ l.typeLabel }}</span>
+                  <span style="flex-shrink:0;font-size:13.5px;font-weight:600;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ l.meta }}</span>
+                  <span role="button" aria-label="Remove" onClick="{{ l.onRemove }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;cursor:pointer;color:var(--error-500);transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  </span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </sc-if>
+      </sc-if>
+
+      <!-- STEP 5 · Review -->
+      <sc-if value="{{ isStep5 }}" hint-placeholder-val="{{ false }}">
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:26px;line-height:34px;letter-spacing:-0.02em;margin:0 0 8px;">Review &amp; finish</h2>
+        <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 28px;">Check the handover is fully captured. You can change any of this later.</p>
+
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);overflow:hidden;">
+          <sc-for list="{{ review }}" as="rv" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:16px;padding:18px 26px;border-bottom:1px solid var(--border-secondary);">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:{{ rv.iconBg }};color:{{ rv.iconFg }};">
+                <sc-if value="{{ rv.isClient }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></sc-if>
+                <sc-if value="{{ rv.isEmp }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></sc-if>
+                <sc-if value="{{ rv.isPolicy }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1.5L8 22l2-1.5L12 22l2-1.5L16 22l2-1.5L20 22V2l-2 1.5L16 2l-2 1.5L12 2l-2 1.5L8 2 6 3.5 4 2Z"></path><path d="m9 12 2 2 4-4"></path></svg></sc-if>
+                <sc-if value="{{ rv.isLoan }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg></sc-if>
+              </span>
+              <span style="flex:1;min-width:0;">
+                <span style="display:block;font-size:15px;font-weight:800;font-family:var(--font-display);letter-spacing:-0.01em;color:var(--fg-primary);">{{ rv.title }}</span>
+                <span style="display:block;font-size:13.5px;line-height:19px;color:var(--fg-tertiary);margin-top:2px;">{{ rv.summary }}</span>
+              </span>
+              <span role="button" onClick="{{ rv.onEdit }}" style="flex-shrink:0;padding:8px 16px;font-size:13px;font-weight:700;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Edit</span>
+            </div>
+          </sc-for>
+          <div style="padding:20px 26px;background:var(--gray-50);">
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+              <p style="font-size:13.5px;line-height:20px;color:var(--fg-tertiary);margin:0;">When you draft their payroll, {{ approverName }} will get an email link to approve it — then you pay from the agency wallet.</p>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- FOOTER NAV -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:28px;">
+        <div>
+          <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ goBack }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+              Back
+            </button>
+          </sc-if>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <sc-if value="{{ showSkip }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ goNext }}" style="padding:13px 20px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-tertiary);background:transparent;border:none;cursor:pointer;">Skip for now</button>
+          </sc-if>
+          <sc-if value="{{ showContinue }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ goContinue }}" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+              {{ continueLabel }}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
+            </button>
+          </sc-if>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  </div>
+
+  <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:10px;padding:13px 20px;background:var(--gray-900);color:#fff;border-radius:12px;box-shadow:var(--shadow-lg);font-size:14.5px;font-weight:600;white-space:nowrap;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--success-400)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      {{ toastMsg }}
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const STEP_LABELS = ['Client & approver', 'Employees', 'Pay policies', 'Loans & advances', 'Review'];
+
+class Component extends DCLogic {
+  state = {
+    step: 0, maxVisited: 0,
+    clientId: '',
+    form: { name: '', industry: '', location: '', contactName: '', contactEmail: '', contactPhone: '' },
+    errors: {},
+    // step 2
+    empMode: 'one',
+    empForm: { first: '', last: '', type: 'Full time', basic: '', ssnit: 'yes' },
+    parsedRows: null, parsedFile: '', parseError: '',
+    // step 3
+    addForm: { name: '', mode: 'fixed', value: '' },
+    dedForm: { name: '', tax: 'posttax', mode: 'fixed', value: '' },
+    // step 4
+    loanForm: { empId: '', type: 'loan', monthly: '', left: '', paid: '' },
+    toastOpen: false, toastMsg: '',
+    tick: 0,
+  };
+  toastTimer = null;
+
+  componentDidMount() {
+    const check = () => {
+      if (!window.AppState) return false;
+      if (window.AppState.isAgency && !window.AppState.isAgency()) { window.location.replace('Clients Page.dc.html'); return true; }
+      this.forceUpdate();
+      return true;
+    };
+    if (!check()) { let n = 0; const poll = () => { if (check() || n++ > 20) return; setTimeout(poll, 30); }; poll(); }
+  }
+  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); }
+
+  showToast(msg) {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.setState({ toastOpen: true, toastMsg: msg });
+    this.toastTimer = setTimeout(() => this.setState({ toastOpen: false }), 2400);
+  }
+  refresh = () => this.setState(s => ({ tick: s.tick + 1 }));
+
+  setField(name, value) { this.setState(s => ({ form: { ...s.form, [name]: value }, errors: { ...s.errors, [name]: '' } })); }
+
+  // ---- step nav ----
+  goTo = (i) => {
+    // Steps beyond 1 need the client record to exist.
+    if (i > 0 && !this.state.clientId) return;
+    this.setState(s => ({ step: i, maxVisited: Math.max(s.maxVisited, i) }));
+  };
+  goBack = () => this.setState(s => ({ step: Math.max(0, s.step - 1) }));
+  goNext = () => this.setState(s => ({ step: Math.min(4, s.step + 1), maxVisited: Math.max(s.maxVisited, Math.min(4, s.step + 1)) }));
+
+  saveStep1 = () => {
+    const f = this.state.form;
+    const errors = {};
+    if (!f.name.trim()) errors.name = 'Company name is required';
+    if (!f.contactName.trim()) errors.contactName = 'Approver name is required';
+    if (!f.contactEmail.trim()) errors.contactEmail = 'Approver email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.contactEmail.trim())) errors.contactEmail = 'Enter a valid email';
+    if (Object.keys(errors).length) { this.setState({ errors }); return; }
+    const A = window.AppState;
+    const data = {
+      name: f.name.trim(), industry: f.industry, location: f.location.trim(),
+      contactName: f.contactName.trim(), contactEmail: f.contactEmail.trim(), contactPhone: f.contactPhone.trim(),
+    };
+    if (this.state.clientId) {
+      A.updateClient(this.state.clientId, data);
+      this.goNext();
+    } else {
+      const rec = A.addClient(data);
+      A.setActiveClient(rec.id);
+      this.setState({ clientId: rec.id }, this.goNext);
+    }
+  };
+
+  // ---- step 2: employees ----
+  onEmpField = (k) => (ev) => this.setState(s => ({ empForm: { ...s.empForm, [k]: ev.target.value } }));
+  empValid() { const f = this.state.empForm; return f.first.trim() && f.last.trim() && Number(String(f.basic).replace(/[^0-9.]/g, '')) > 0; }
+  // Keep the client's employees/payroll flags in step with the roster, so Payroll
+  // isn't left "locked" if the agency leaves the wizard before Finish.
+  _syncFlags = () => {
+    const A = window.AppState;
+    const hasEmps = A.getEmployees().length > 0;
+    const cur = A.get();
+    A.set({
+      employees: hasEmps ? 'done' : 'todo',
+      payroll: (cur.payroll === 'locked' && hasEmps) ? 'unlocked' : cur.payroll,
+    });
+  };
+  addEmp = () => {
+    if (!this.empValid()) { this.showToast('Fill in name and basic salary first'); return; }
+    const f = this.state.empForm;
+    const basic = String(f.basic).replace(/[^0-9.]/g, '');
+    window.AppState.addEmployees({
+      firstName: f.first.trim(), surname: f.last.trim(),
+      employmentType: f.type, type: f.type,
+      basicSalary: basic, basic: basic, ssnit: f.ssnit,
+      status: 'Active', state: 'ready', tone: 'success',
+    });
+    this._syncFlags();
+    this.setState({ empForm: { first: '', last: '', type: f.type, basic: '', ssnit: f.ssnit } });
+    this.showToast(f.first.trim() + ' added to the roster');
+  };
+  removeEmp = (id) => () => {
+    const A = window.AppState;
+    A.setEmployees(A.getEmployees().filter(r => r.id !== id));
+    this._syncFlags();
+    this.refresh();
+  };
+  onFile = (ev) => {
+    const f = ev.target.files && ev.target.files[0];
+    if (!f) return;
+    const A = window.AppState;
+    const finish = (rows, err) => {
+      if (!rows || !rows.length) { this.setState({ parseError: err || 'No employees found in that file.', parsedRows: null, parsedFile: '' }); return; }
+      this.setState({ parsedRows: rows, parsedFile: f.name, parseError: '' });
+    };
+    const isCsv = /\.csv$/i.test(f.name);
+    try {
+      if (isCsv && A.parseEmployeesCsv) {
+        const r = new FileReader();
+        r.onload = () => { try { finish(A.parseEmployeesCsv(String(r.result))); } catch (ex) { finish(null, 'Could not read the CSV file.'); } };
+        r.onerror = () => finish(null, 'Could not read the file.');
+        r.readAsText(f);
+      } else if (/\.xlsx$/i.test(f.name) && A.parseEmployeesXlsx) {
+        const r = new FileReader();
+        r.onload = () => { A.parseEmployeesXlsx(r.result).then(res => finish(res)).catch(() => finish(null, 'Could not read this .xlsx file. Try saving it as CSV.')); };
+        r.onerror = () => finish(null, 'Could not read the file.');
+        r.readAsArrayBuffer(f);
+      } else {
+        finish(null, 'Upload a .csv or .xlsx file.');
+      }
+    } catch (e) { finish(null, 'Could not read the file.'); }
+  };
+  clearParse = () => this.setState({ parsedRows: null, parsedFile: '', parseError: '' });
+  importParsed = () => {
+    const rows = this.state.parsedRows || [];
+    if (!rows.length) return;
+    const canon = rows.map(p => ({
+      ...p,
+      firstName: p.firstName || '', surname: p.surname || '',
+      basicSalary: p.basicSalary != null ? p.basicSalary : (p.basic != null ? p.basic : ''),
+      basic: p.basic != null ? p.basic : (p.basicSalary != null ? p.basicSalary : ''),
+      status: 'Active', state: 'ready', tone: 'success',
+    }));
+    window.AppState.addEmployees(canon);
+    this._syncFlags();
+    this.setState({ parsedRows: null, parsedFile: '', parseError: '' });
+    this.showToast(canon.length + (canon.length === 1 ? ' employee' : ' employees') + ' imported');
+  };
+
+  // ---- step 3: policies ----
+  onAddField = (k) => (ev) => this.setState(s => ({ addForm: { ...s.addForm, [k]: ev.target.value } }));
+  onDedField = (k) => (ev) => this.setState(s => ({ dedForm: { ...s.dedForm, [k]: ev.target.value } }));
+  addAddition = () => {
+    const f = this.state.addForm;
+    const val = Number(String(f.value).replace(/[^0-9.]/g, '')) || 0;
+    if (!f.name.trim() || val <= 0) { this.showToast('Give the addition a name and amount'); return; }
+    const count = window.AppState.getEmployees().length;
+    const valueText = f.mode === 'fixed' ? 'GH\u20b5 ' + val.toLocaleString('en-GH') : val + '% of basic';
+    window.AppState.addCompanyAddition({
+      id: 'ca-' + Date.now(), name: f.name.trim(),
+      type: 'cash', typeLabel: 'Cash allowance', kind: 'cash',
+      valueText, value: val, valueMode: f.mode, freq: 'Monthly',
+      scope: 'all', empIds: [], empNames: [], taxable: true,
+      anchorMonth: new Date().getMonth(), anchorYear: new Date().getFullYear(),
+      applyLabel: 'All employees', count,
+    });
+    this.setState({ addForm: { name: '', mode: f.mode, value: '' } });
+    this.showToast('Pay addition added');
+  };
+  removeAddition = (id) => () => { window.AppState.removeCompanyAddition(id); this.refresh(); };
+  addDeduction = () => {
+    const f = this.state.dedForm;
+    const val = Number(String(f.value).replace(/[^0-9.]/g, '')) || 0;
+    if (!f.name.trim() || val <= 0) { this.showToast('Give the deduction a name and amount'); return; }
+    const count = window.AppState.getEmployees().length;
+    const valueText = f.mode === 'fixed' ? 'GH\u20b5 ' + val.toLocaleString('en-GH') : val + '% of basic';
+    window.AppState.addCompanyDeduction({
+      id: 'cd-' + Date.now(), name: f.name.trim(),
+      taxMode: f.tax, typeLabel: f.tax === 'pretax' ? 'Before tax' : 'After tax',
+      valueText, value: val, valueMode: f.mode, freq: 'Monthly',
+      scope: 'all', empIds: [], empNames: [],
+      anchorMonth: new Date().getMonth(), anchorYear: new Date().getFullYear(),
+      count,
+    });
+    this.setState({ dedForm: { name: '', tax: f.tax, mode: f.mode, value: '' } });
+    this.showToast('Pay deduction added');
+  };
+  removeDeduction = (id) => () => { window.AppState.removeCompanyDeduction(id); this.refresh(); };
+
+  // ---- step 4: loans ----
+  onLoanField = (k) => (ev) => this.setState(s => ({ loanForm: { ...s.loanForm, [k]: ev.target.value } }));
+  setLoanType = (t) => () => this.setState(s => ({ loanForm: { ...s.loanForm, type: t } }));
+  addLoan = () => {
+    const f = this.state.loanForm;
+    const monthly = Number(String(f.monthly).replace(/[^0-9.]/g, '')) || 0;
+    const left = Number(String(f.left).replace(/[^0-9.]/g, '')) || 0;
+    const paid = Number(String(f.paid).replace(/[^0-9.]/g, '')) || 0;
+    if (!f.empId || monthly <= 0 || left <= 0) { this.showToast('Pick an employee and fill the amounts'); return; }
+    const A = window.AppState;
+    const loans = A.getLoans();
+    loans.push({ id: 'ln' + Date.now(), empId: f.empId, type: f.type, monthly, paid, total: paid + left });
+    A.setLoans(loans);
+    this.setState({ loanForm: { empId: '', type: f.type, monthly: '', left: '', paid: '' } });
+    this.showToast((f.type === 'loan' ? 'Loan' : 'Salary advance') + ' recorded');
+  };
+  removeLoan = (id) => () => { const A = window.AppState; A.setLoans(A.getLoans().filter(l => l.id !== id)); this.refresh(); };
+
+  // ---- finish ----
+  finish = () => {
+    const A = window.AppState;
+    const hasEmps = A.getEmployees().length > 0;
+    const cur = A.get();
+    A.set({
+      employees: hasEmps ? 'done' : 'todo',
+      payroll: cur.payroll === 'locked' && hasEmps ? 'unlocked' : cur.payroll,
+    });
+    window.location.href = 'Clients Page.dc.html';
+  };
+
+  renderVals() {
+    const A = window.AppState;
+    const ready = !!(A && A.getClients);
+    const s = this.state;
+    const money = (n) => 'GH\u20b5 ' + Number(n).toLocaleString('en-GH');
+    const acct = ready ? A.getAccount() : {};
+    const clientName = s.form.name.trim() || 'the client';
+
+    // stepper
+    const steps = STEP_LABELS.map((label, i) => {
+      const done = i < s.step;
+      const current = i === s.step;
+      const reachable = i <= s.maxVisited && (i === 0 || !!s.clientId);
+      return {
+        n: String(i + 1), label,
+        notFirst: i > 0,
+        done, notDone: !done,
+        dotBg: done ? 'var(--brand-600)' : (current ? 'var(--brand-50)' : '#fff'),
+        dotFg: done ? '#fff' : (current ? 'var(--brand-700)' : 'var(--fg-quaternary)'),
+        dotBd: done || current ? 'var(--brand-600)' : 'var(--border-primary)',
+        labelColor: current ? 'var(--fg-primary)' : (done ? 'var(--brand-700)' : 'var(--fg-quaternary)'),
+        lineBg: done ? 'var(--brand-300)' : 'var(--border-secondary)',
+        cursor: reachable ? 'pointer' : 'default',
+        onGo: reachable ? (() => this.goTo(i)) : (() => {}),
+      };
+    });
+
+    // step 2 data
+    const rosterRaw = (ready && s.clientId) ? A.getEmployees() : [];
+    const roster = rosterRaw.map(r => ({
+      name: r.name, init: r.initials || '?',
+      meta: [r.employmentType || r.type, (r.ssnit === 'no' ? 'No SSNIT' : 'SSNIT')].filter(Boolean).join(' \u00b7 '),
+      basic: money(Number(String(r.basic || 0).toString().replace(/[^0-9.]/g, '')) || 0),
+      onRemove: this.removeEmp(r.id),
+    }));
+    const rosterTotalN = rosterRaw.reduce((a, r) => a + (Number(String(r.basic || 0).toString().replace(/[^0-9.]/g, '')) || 0), 0);
+
+    // step 3 data
+    const additionsRaw = (ready && s.clientId) ? A.getCompanyAdditions() : [];
+    const deductionsRaw = (ready && s.clientId) ? A.getCompanyDeductions() : [];
+    const additions = additionsRaw.map(a => ({ name: a.name, valueText: a.valueText || '', onRemove: this.removeAddition(a.id) }));
+    const deductions = deductionsRaw.map(d => ({
+      name: d.name, valueText: d.valueText || '',
+      taxLabel: d.taxMode === 'pretax' ? 'Before tax' : 'After tax',
+      taxFg: d.taxMode === 'pretax' ? '#175CD3' : 'var(--fg-tertiary)',
+      taxBg: d.taxMode === 'pretax' ? '#EFF8FF' : 'var(--gray-100)',
+      onRemove: this.removeDeduction(d.id),
+    }));
+
+    // step 4 data
+    const loansRaw = (ready && s.clientId) ? A.getLoans() : [];
+    const empById = {}; rosterRaw.forEach(r => { empById[r.id] = r; });
+    const loans = loansRaw.map(l => ({
+      name: (empById[l.empId] || {}).name || 'Employee',
+      typeLabel: l.type === 'loan' ? 'Loan' : 'Advance',
+      typeFg: l.type === 'loan' ? 'var(--brand-700)' : 'var(--warning-700)',
+      typeBg: l.type === 'loan' ? 'var(--brand-50)' : 'var(--warning-50)',
+      meta: money(l.monthly) + ' /mo \u00b7 ' + money(Math.max(0, (l.total || 0) - (l.paid || 0))) + ' left',
+      onRemove: this.removeLoan(l.id),
+    }));
+
+    // review
+    const f = s.form;
+    const review = [
+      { title: f.name.trim() || 'Client', summary: [f.industry, f.location].filter(Boolean).join(' \u00b7 ') + (f.contactName ? ((f.industry || f.location ? ' \u00b7 ' : '') + 'Approver: ' + f.contactName.trim()) : ''), isClient: true, iconBg: 'var(--brand-50)', iconFg: 'var(--brand-700)', onEdit: () => this.goTo(0) },
+      { title: rosterRaw.length + (rosterRaw.length === 1 ? ' employee' : ' employees'), summary: rosterRaw.length ? money(rosterTotalN) + ' total monthly basic pay' : 'None added yet \u2014 you can add them any time from People.', isEmp: true, iconBg: '#EFF8FF', iconFg: '#175CD3', onEdit: () => this.goTo(1) },
+      { title: additionsRaw.length + (additionsRaw.length === 1 ? ' addition' : ' additions') + ' \u00b7 ' + deductionsRaw.length + (deductionsRaw.length === 1 ? ' deduction' : ' deductions'), summary: (additionsRaw.length + deductionsRaw.length) ? [...additionsRaw.map(x => x.name), ...deductionsRaw.map(x => x.name)].slice(0, 4).join(', ') : 'No recurring pay policies yet \u2014 set them up later in Payroll.', isPolicy: true, iconBg: 'var(--success-50)', iconFg: 'var(--success-700)', onEdit: () => this.goTo(2) },
+      { title: loansRaw.length + (loansRaw.length === 1 ? ' loan / advance' : ' loans / advances'), summary: loansRaw.length ? money(loansRaw.reduce((a, l) => a + Math.max(0, (l.total || 0) - (l.paid || 0)), 0)) + ' outstanding' : 'Nothing being recovered.', isLoan: true, iconBg: 'var(--warning-50)', iconFg: 'var(--warning-700)', onEdit: () => this.goTo(3) },
+    ];
+
+    const e = s.errors;
+    const ef = s.empForm;
+    const step = s.step;
+    const parsedCount = (s.parsedRows || []).length;
+    const lf = s.loanForm;
+    const isLoanType = lf.type === 'loan';
+
+    return {
+      today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+      firmName: acct.company || 'your firm',
+      clientName,
+      steps,
+      isStep1: step === 0, isStep2: step === 1, isStep3: step === 2, isStep4: step === 3, isStep5: step === 4,
+
+      // step 1
+      fName: f.name, fIndustry: f.industry, fLocation: f.location,
+      fContactName: f.contactName, fContactEmail: f.contactEmail, fContactPhone: f.contactPhone,
+      eName: e.name || '', eContactName: e.contactName || '', eContactEmail: e.contactEmail || '',
+      onName: (ev) => this.setField('name', ev.target.value),
+      onIndustry: (ev) => this.setField('industry', ev.target.value),
+      onLocation: (ev) => this.setField('location', ev.target.value),
+      onContactName: (ev) => this.setField('contactName', ev.target.value),
+      onContactEmail: (ev) => this.setField('contactEmail', ev.target.value),
+      onContactPhone: (ev) => this.setField('contactPhone', ev.target.value),
+
+      // step 2
+      modeOne: s.empMode === 'one', modeImport: s.empMode === 'import',
+      pickModeOne: () => this.setState({ empMode: 'one' }),
+      pickModeImport: () => this.setState({ empMode: 'import' }),
+      modeOneBg: s.empMode === 'one' ? '#fff' : 'transparent',
+      modeOneFg: s.empMode === 'one' ? 'var(--fg-primary)' : 'var(--fg-tertiary)',
+      modeOneShadow: s.empMode === 'one' ? 'var(--shadow-xs)' : 'none',
+      modeImpBg: s.empMode === 'import' ? '#fff' : 'transparent',
+      modeImpFg: s.empMode === 'import' ? 'var(--fg-primary)' : 'var(--fg-tertiary)',
+      modeImpShadow: s.empMode === 'import' ? 'var(--shadow-xs)' : 'none',
+      empFirst: ef.first, empLast: ef.last, empType: ef.type, empBasic: ef.basic, empSsnit: ef.ssnit,
+      onEmpFirst: this.onEmpField('first'), onEmpLast: this.onEmpField('last'), onEmpType: this.onEmpField('type'),
+      onEmpBasic: this.onEmpField('basic'), onEmpSsnit: this.onEmpField('ssnit'),
+      addEmp: this.addEmp, addEmpOpacity: this.empValid() ? '1' : '0.55',
+      noParse: !s.parsedRows, hasParse: !!s.parsedRows,
+      parseError: !!s.parseError, parseErrorMsg: s.parseError,
+      parseFileName: s.parsedFile,
+      parseSummary: parsedCount + (parsedCount === 1 ? ' employee' : ' employees') + ' found',
+      importCta: 'Add ' + parsedCount + (parsedCount === 1 ? ' employee' : ' employees'),
+      onFile: this.onFile, clearParse: this.clearParse, importParsed: this.importParsed,
+      hasRoster: roster.length > 0, roster, rosterCount: String(roster.length), rosterTotal: money(rosterTotalN),
+
+      // step 3
+      additions, deductions,
+      addName: s.addForm.name, addMode: s.addForm.mode, addValue: s.addForm.value,
+      onAddName: this.onAddField('name'), onAddMode: this.onAddField('mode'), onAddValue: this.onAddField('value'),
+      addAddition: this.addAddition,
+      addAdditionOpacity: (s.addForm.name.trim() && Number(String(s.addForm.value).replace(/[^0-9.]/g, '')) > 0) ? '1' : '0.55',
+      dedName: s.dedForm.name, dedTax: s.dedForm.tax, dedMode: s.dedForm.mode, dedValue: s.dedForm.value,
+      onDedName: this.onDedField('name'), onDedTax: this.onDedField('tax'), onDedMode: this.onDedField('mode'), onDedValue: this.onDedField('value'),
+      addDeduction: this.addDeduction,
+      addDeductionOpacity: (s.dedForm.name.trim() && Number(String(s.dedForm.value).replace(/[^0-9.]/g, '')) > 0) ? '1' : '0.55',
+
+      // step 4
+      noRosterForLoans: rosterRaw.length === 0, hasRosterForLoans: rosterRaw.length > 0,
+      goStep2: () => this.goTo(1),
+      loanEmpOptions: rosterRaw.map(r => ({ id: r.id, name: r.name })),
+      loanEmp: lf.empId, onLoanEmp: this.onLoanField('empId'),
+      pickLoan: this.setLoanType('loan'), pickAdvance: this.setLoanType('advance'),
+      loanTypeBd: isLoanType ? 'var(--brand-500)' : 'var(--border-primary)',
+      loanTypeFg: isLoanType ? 'var(--brand-700)' : 'var(--fg-secondary)',
+      loanTypeBg: isLoanType ? 'var(--brand-25)' : '#fff',
+      advTypeBd: !isLoanType ? 'var(--warning-400)' : 'var(--border-primary)',
+      advTypeFg: !isLoanType ? 'var(--warning-700)' : 'var(--fg-secondary)',
+      advTypeBg: !isLoanType ? 'var(--warning-25)' : '#fff',
+      loanMonthly: lf.monthly, loanLeft: lf.left, loanPaid: lf.paid,
+      onLoanMonthly: this.onLoanField('monthly'), onLoanLeft: this.onLoanField('left'), onLoanPaid: this.onLoanField('paid'),
+      addLoan: this.addLoan,
+      addLoanOpacity: (lf.empId && Number(String(lf.monthly).replace(/[^0-9.]/g, '')) > 0 && Number(String(lf.left).replace(/[^0-9.]/g, '')) > 0) ? '1' : '0.55',
+      hasLoans: loans.length > 0, loans,
+
+      // step 5
+      review,
+      approverName: f.contactName.trim() || 'the approver',
+
+      // footer
+      showBack: step > 0,
+      showSkip: step >= 1 && step <= 3,
+      showContinue: true,
+      continueLabel: step === 0 ? 'Continue' : (step === 4 ? 'Finish \u2014 add ' + clientName : 'Continue'),
+      goBack: this.goBack,
+      goNext: this.goNext,
+      goContinue: step === 0 ? this.saveStep1 : (step === 4 ? this.finish : this.goNext),
+
+      toastOpen: s.toastOpen, toastMsg: s.toastMsg,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script src="./ds-base.js"></script>
+<script src="./app-state.js"></script>
+<style>
+  * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+</style>
+</helmet>
+<div style="display:flex;height:100vh;overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <dc-import name="Sidebar" active="clients" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+    <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);">
+      <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-body);font-size:15px;font-weight:600;">
+        <span role="button" onClick="{{ goListCrumb }}" style="color:{{ listCrumbColor }};cursor:{{ listCrumbCursor }};transition:color 120ms ease;">Clients</span>
+        <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ false }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span style="color:var(--brand-700);">Add a client</span>
+        </sc-if>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;">
+        <div style="display:flex;align-items:center;gap:9px;color:var(--fg-secondary);font-size:15px;font-weight:500;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          {{ today }}
+        </div>
+        <span role="button" aria-label="Notifications" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+        </span>
+      </div>
+    </header>
+
+    <div style="flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;background:var(--bg-secondary);">
+
+      <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+        <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 40px 26px;background:#fff;border-bottom:1px solid var(--border-secondary);">
+          <div style="display:flex;flex-direction:column;align-items:flex-start;">
+            <h2 style="font-family:var(--font-display);font-weight:600;font-size:24px;line-height:32px;letter-spacing:-0.02em;margin:0 0 6px;color:var(--fg-primary);">Clients</h2>
+            <p style="font-size:14px;line-height:20px;margin:0;color:var(--fg-tertiary);">The companies {{ firmName }} runs payroll for.</p>
+          </div>
+          <sc-if value="{{ hasClients }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ goAdd }}" style="display:inline-flex;align-items:center;gap:11px;padding:14px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v8M8 12h8"></path></svg>
+              Add a client
+            </button>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ hasClients }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:28px 40px 48px;">
+            <div style="border:1px solid var(--border-secondary);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-xs);">
+              <div style="display:grid;grid-template-columns:2.1fr 1.8fr 0.9fr 1.2fr 1.3fr 48px;gap:16px;align-items:center;padding:13px 24px;background:var(--gray-50);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">
+                <span>Client</span>
+                <span>Payroll approver</span>
+                <span>Employees</span>
+                <span>Allocated budget</span>
+                <span>Status</span>
+                <span></span>
+              </div>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+                <div role="button" onClick="{{ r.open }}" style="display:grid;grid-template-columns:2.1fr 1.8fr 0.9fr 1.2fr 1.3fr 48px;gap:16px;align-items:center;padding:15px 24px;background:{{ r.bg }};border-bottom:1px solid var(--border-secondary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                  <span style="display:flex;align-items:center;gap:12px;min-width:0;">
+                    <span style="width:38px;height:38px;flex-shrink:0;border-radius:10px;background:var(--brand-50);color:var(--brand-700);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:13px;">{{ r.init }}</span>
+                    <span style="min-width:0;">
+                      <span style="display:flex;align-items:center;gap:8px;">
+                        <span style="font-size:15px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.name }}</span>
+                        <sc-if value="{{ r.isActive }}" hint-placeholder-val="{{ false }}">
+                          <span style="flex-shrink:0;font-size:11px;font-weight:700;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);padding:1px 8px;border-radius:999px;">Working in</span>
+                        </sc-if>
+                      </span>
+                      <span style="display:block;font-size:13px;color:var(--fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.meta }}</span>
+                    </span>
+                  </span>
+                  <span style="min-width:0;">
+                    <span style="display:block;font-size:14px;font-weight:600;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.contactName }}</span>
+                    <span style="display:block;font-size:13px;color:var(--fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.contactEmail }}</span>
+                  </span>
+                  <span style="font-size:14px;font-weight:600;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ r.employees }}</span>
+                  <span style="font-size:14px;font-weight:600;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ r.alloc }}</span>
+                  <span><span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:{{ r.stFg }};background:{{ r.stBg }};border:1px solid {{ r.stBd }};padding:3px 10px;border-radius:999px;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:999px;background:{{ r.stDot }};"></span>{{ r.status }}</span></span>
+                  <span style="display:inline-flex;align-items:center;justify-content:center;color:var(--gray-400);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ noClients }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 40px;">
+            <div style="max-width:520px;width:100%;box-sizing:border-box;text-align:center;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:48px 40px;">
+              <div style="display:flex;justify-content:center;margin-bottom:22px;">
+                <span style="width:64px;height:64px;border-radius:var(--radius-full);background:var(--brand-50);color:var(--brand-600);display:inline-flex;align-items:center;justify-content:center;">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                </span>
+              </div>
+              <h3 style="font-family:var(--font-display);font-size:22px;line-height:30px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;">Add your first client</h3>
+              <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 28px;">Each client is a company you run payroll for. You'll add their employees, set up their payroll, and send runs to their approver — all from this workspace.</p>
+              <button onClick="{{ goAdd }}" style="display:inline-flex;align-items:center;gap:11px;padding:14px 26px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v8M8 12h8"></path></svg>
+                Add a client
+              </button>
+            </div>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:36px 40px 64px;display:flex;justify-content:center;">
+          <div style="width:100%;max-width:640px;">
+            <h2 style="font-family:var(--font-display);font-weight:800;font-size:26px;line-height:34px;letter-spacing:-0.02em;margin:0 0 8px;">Add a client</h2>
+            <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 32px;">A company {{ firmName }} will run payroll for.</p>
+
+            <div style="margin-bottom:24px;">
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Company Name" required="{{ true }}" value="{{ fName }}" on-change="{{ onName }}" error="{{ eName }}" placeholder="eg. “Kente Textiles Ltd”" size="lg" hint-size="100%,76px"></x-import>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px;">
+              <div>
+                <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Industry</label>
+                <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Select" size="lg" value="{{ fIndustry }}" on-change="{{ onIndustry }}" hint-size="100%,50px">
+                  <option value="">Select industry</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Hospitality">Hospitality</option>
+                  <option value="Financial services">Financial services</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Logistics">Logistics</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Education">Education</option>
+                  <option value="Construction">Construction</option>
+                  <option value="NGO / non-profit">NGO / non-profit</option>
+                  <option value="Other">Other</option>
+                </x-import>
+              </div>
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Location" value="{{ fLocation }}" on-change="{{ onLocation }}" placeholder="eg. “Accra”" size="lg" hint-size="100%,76px"></x-import>
+            </div>
+
+            <div style="border-top:1px solid var(--border-secondary);padding-top:28px;margin-bottom:24px;">
+              <h3 style="font-family:var(--font-display);font-size:17px;font-weight:800;letter-spacing:-0.01em;margin:0 0 4px;">Payroll approver</h3>
+              <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0 0 22px;">The person at the client who approves each payroll run. They don't get a login — they'll receive an email with a link to approve or reject, with comments.</p>
+              <div style="margin-bottom:24px;">
+                <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Full Name" required="{{ true }}" value="{{ fContactName }}" on-change="{{ onContactName }}" error="{{ eContactName }}" placeholder="eg. “Akua Mensah”" size="lg" hint-size="100%,76px"></x-import>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Email" type="email" required="{{ true }}" value="{{ fContactEmail }}" on-change="{{ onContactEmail }}" error="{{ eContactEmail }}" placeholder="eg. “akua@kente.com.gh”" size="lg" hint-size="100%,76px"></x-import>
+                <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Phone Number" type="tel" value="{{ fContactPhone }}" on-change="{{ onContactPhone }}" placeholder="eg. “(54) 000-0000”" size="lg" hint-size="100%,76px"></x-import>
+              </div>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:14px;padding-top:8px;">
+              <button onClick="{{ goList }}" style="display:inline-flex;align-items:center;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Cancel</button>
+              <button onClick="{{ save }}" style="display:inline-flex;align-items:center;gap:10px;padding:13px 26px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">
+                Save client
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    view: 'list',
+    form: { name: '', industry: '', location: '', contactName: '', contactEmail: '', contactPhone: '' },
+    errors: {},
+  };
+
+  componentDidMount() {
+    const check = () => {
+      if (!window.AppState) return false;
+      // This page is agency-only — a company account has no clients concept.
+      if (window.AppState.isAgency && !window.AppState.isAgency()) {
+        window.location.replace('Dashboard Page.dc.html');
+        return true;
+      }
+      this.forceUpdate();
+      return true;
+    };
+    if (!check()) { let n = 0; const poll = () => { if (check() || n++ > 20) return; setTimeout(poll, 30); }; poll(); }
+  }
+
+  setField(name, value) {
+    this.setState(s => ({ form: { ...s.form, [name]: value }, errors: { ...s.errors, [name]: '' } }));
+  }
+
+  save = () => {
+    const f = this.state.form;
+    const errors = {};
+    if (!f.name.trim()) errors.name = 'Company name is required';
+    if (!f.contactName.trim()) errors.contactName = 'Approver name is required';
+    if (!f.contactEmail.trim()) errors.contactEmail = 'Approver email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.contactEmail.trim())) errors.contactEmail = 'Enter a valid email';
+    if (Object.keys(errors).length) { this.setState({ errors }); return; }
+    const A = window.AppState;
+    if (A && A.addClient) {
+      const rec = A.addClient({
+        name: f.name.trim(), industry: f.industry, location: f.location.trim(),
+        contactName: f.contactName.trim(), contactEmail: f.contactEmail.trim(), contactPhone: f.contactPhone.trim(),
+      });
+      // First client becomes the working context right away.
+      if (A.getClients().length === 1 && A.setActiveClient) A.setActiveClient(rec.id);
+    }
+    this.setState({
+      view: 'list',
+      form: { name: '', industry: '', location: '', contactName: '', contactEmail: '', contactPhone: '' },
+      errors: {},
+    });
+  };
+
+  openClient = (id) => () => {
+    if (window.AppState && window.AppState.setActiveClient) window.AppState.setActiveClient(id);
+    window.location.href = 'Dashboard Page.dc.html';
+  };
+
+  renderVals() {
+    const A = window.AppState;
+    const clients = (A && A.getClients) ? A.getClients() : [];
+    const activeId = (A && A.getActiveClientId) ? A.getActiveClientId() : '';
+    const acct = (A && A.getAccount) ? A.getAccount() : {};
+    const cInit = (nm) => (nm || '').trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase() || '?';
+    const money = (n) => 'GH\u20b5 ' + Number(n).toLocaleString('en-GH');
+    const lsJson = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
+
+    const ST = {
+      new:      { label: 'New',               fg: 'var(--fg-tertiary)',   bg: 'var(--gray-50)',    bd: 'var(--border-secondary)', dot: 'var(--gray-400)' },
+      setup:    { label: 'Setup in progress', fg: '#175CD3',              bg: '#EFF8FF',           bd: '#B2DDFF',                 dot: '#2E90FA' },
+      ready:    { label: 'Payroll ready',     fg: 'var(--success-700)',   bg: 'var(--success-50)', bd: '#ABEFC6',                 dot: 'var(--success-500)' },
+      awaiting: { label: 'Awaiting approval', fg: '#B54708',              bg: '#FFFAEB',           bd: '#FEDF89',                 dot: '#F79009' },
+    };
+
+    const rows = clients.map(c => {
+      const roster = lsJson('dxp_roster@' + c.id, []);
+      const payroll = (() => { try { return localStorage.getItem('dxp_payroll@' + c.id) || 'locked'; } catch (e) { return 'locked'; } })();
+      const approval = lsJson('dxp_approval@' + c.id, null);
+      const empCount = Array.isArray(roster) ? roster.length : 0;
+      let st = ST.new;
+      if (approval && approval.status === 'pending') st = ST.awaiting;
+      else if (payroll === 'done' || payroll === 'paid') st = ST.ready;
+      else if (empCount > 0) st = ST.setup;
+      const allocN = (A && A.getAllocation) ? A.getAllocation(c.id) : 0;
+      const meta = [c.industry, c.location].filter(Boolean).join(' \u00b7 ') || '\u2014';
+      return {
+        name: c.name, init: cInit(c.name), meta,
+        contactName: c.contactName || '\u2014', contactEmail: c.contactEmail || '',
+        employees: String(empCount),
+        alloc: allocN > 0 ? money(allocN) : '\u2014',
+        status: st.label, stFg: st.fg, stBg: st.bg, stBd: st.bd, stDot: st.dot,
+        isActive: c.id === activeId,
+        bg: c.id === activeId ? 'var(--brand-25)' : '#fff',
+        open: this.openClient(c.id),
+      };
+    });
+
+    const isAdd = this.state.view === 'add';
+    const f = this.state.form;
+    const e = this.state.errors;
+    return {
+      today: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+      firmName: acct.company || 'your firm',
+      isList: !isAdd, isAdd,
+      hasClients: clients.length > 0, noClients: clients.length === 0,
+      rows,
+      goAdd: () => { window.location.href = 'Add Client.dc.html'; },
+      goList: () => this.setState({ view: 'list', errors: {} }),
+      goListCrumb: () => { if (isAdd) this.setState({ view: 'list', errors: {} }); },
+      listCrumbColor: isAdd ? 'var(--fg-tertiary)' : 'var(--brand-700)',
+      listCrumbCursor: isAdd ? 'pointer' : 'default',
+      save: this.save,
+      fName: f.name, fIndustry: f.industry, fLocation: f.location,
+      fContactName: f.contactName, fContactEmail: f.contactEmail, fContactPhone: f.contactPhone,
+      eName: e.name || '', eContactName: e.contactName || '', eContactEmail: e.contactEmail || '',
+      onName: (ev) => this.setField('name', ev.target.value),
+      onIndustry: (ev) => this.setField('industry', ev.target.value),
+      onLocation: (ev) => this.setField('location', ev.target.value),
+      onContactName: (ev) => this.setField('contactName', ev.target.value),
+      onContactEmail: (ev) => this.setField('contactEmail', ev.target.value),
+      onContactPhone: (ev) => this.setField('contactPhone', ev.target.value),
+    };
+  }
+}
+</script>
+</body>
+</html>

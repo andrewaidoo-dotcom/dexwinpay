@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script src="./ds-base.js"></script>
+<script src="./app-state.js"></script>
+<style>
+  * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+</style>
+</helmet>
+<div style="display:flex;height:100vh;overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <dc-import name="Sidebar" active="teammates" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+    <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);">
+      <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-body);font-size:15px;font-weight:600;">
+        <span style="color:var(--brand-700);">Teammates</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;">
+        <div style="display:flex;align-items:center;gap:9px;color:var(--fg-secondary);font-size:15px;font-weight:500;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          {{ today }}
+        </div>
+        <span role="button" aria-label="Notifications" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+        </span>
+      </div>
+    </header>
+
+    <div style="flex:1;overflow-y:auto;overflow-x:hidden;background:var(--bg-secondary);">
+      <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 40px 26px;background:#fff;border-bottom:1px solid var(--border-secondary);">
+        <div style="display:flex;flex-direction:column;align-items:flex-start;">
+          <h2 style="font-family:var(--font-display);font-weight:600;font-size:24px;line-height:32px;letter-spacing:-0.02em;margin:0 0 6px;color:var(--fg-primary);">Teammates</h2>
+          <p style="font-size:14px;line-height:20px;margin:0;color:var(--fg-tertiary);">The people at {{ firmName }} who help manage clients and run payrolls.</p>
+        </div>
+        <button onClick="{{ openInvite }}" style="display:inline-flex;align-items:center;gap:11px;padding:14px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 13.292-6"></path><circle cx="10" cy="8" r="5"></circle><path d="M19 16v6"></path><path d="M22 19h-6"></path></svg>
+          Invite a teammate
+        </button>
+      </div>
+
+      <div style="padding:28px 40px 48px;">
+        <div style="border:1px solid var(--border-secondary);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-xs);">
+          <div style="display:grid;grid-template-columns:2.4fr 1.3fr 1.3fr 170px;gap:16px;align-items:center;padding:13px 24px;background:var(--gray-50);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">
+            <span>Teammate</span>
+            <span>Access</span>
+            <span>Status</span>
+            <span></span>
+          </div>
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+            <div role="button" onClick="{{ r.onOpen }}" style="display:grid;grid-template-columns:2.4fr 1.3fr 1.3fr 170px;gap:16px;align-items:center;padding:14px 24px;background:#fff;border-bottom:1px solid var(--border-secondary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+              <span style="display:flex;align-items:center;gap:12px;min-width:0;">
+                <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Avatar" initials="{{ r.initials }}" size="md" hint-size="40px,40px"></x-import>
+                <span style="min-width:0;">
+                  <span style="display:flex;align-items:center;gap:8px;">
+                    <span style="font-size:15px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.name }}</span>
+                    <sc-if value="{{ r.isOwner }}" hint-placeholder-val="{{ false }}">
+                      <span style="flex-shrink:0;font-size:11px;font-weight:700;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);padding:1px 8px;border-radius:999px;">Owner</span>
+                    </sc-if>
+                  </span>
+                  <span style="display:block;font-size:13px;color:var(--fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.email }}</span>
+                </span>
+              </span>
+              <span><span style="display:inline-flex;align-items:center;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;background:{{ r.badgeBg }};color:{{ r.badgeColor }};white-space:nowrap;">{{ r.badge }}</span></span>
+              <span><span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:{{ r.stFg }};background:{{ r.stBg }};border:1px solid {{ r.stBd }};padding:3px 10px;border-radius:999px;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:999px;background:{{ r.stDot }};"></span>{{ r.status }}</span></span>
+              <span style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+                <sc-if value="{{ r.isPending }}" hint-placeholder-val="{{ false }}">
+                  <span role="button" onClick="{{ r.onResend }}" style="display:inline-flex;align-items:center;padding:7px 13px;font-size:13px;font-weight:700;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;white-space:nowrap;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Resend</span>
+                </sc-if>
+                <sc-if value="{{ r.canRemove }}" hint-placeholder-val="{{ false }}">
+                  <span role="button" aria-label="Remove" onClick="{{ r.onRemove }}" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;cursor:pointer;color:var(--error-500);transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg>
+                  </span>
+                </sc-if>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ ownerOnly }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ openInvite }}" style="width:100%;box-sizing:border-box;margin-top:24px;display:flex;align-items:center;justify-content:center;gap:12px;padding:26px 24px;border:1px dashed #02aa69;border-radius:16px;cursor:pointer;font-family:var(--font-body);transition:background 120ms ease;background-color:#ffffff;" style-hover="background:var(--brand-50);">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:var(--radius-full);background:var(--brand-50);color:var(--brand-600);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+            </span>
+            <span style="display:flex;flex-direction:column;align-items:flex-start;">
+              <span style="font-size:14px;font-weight:700;color:var(--brand-700);">It's just you so far — invite a teammate</span>
+              <span style="font-size:13px;color:var(--fg-tertiary);">They'll get an email to join {{ firmName }} and help run client payrolls.</span>
+            </span>
+          </button>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:760px;max-height:88vh;background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;">
+
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 28px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+          <div style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 13.292-6"></path><circle cx="10" cy="8" r="5"></circle><path d="M19 16v6"></path><path d="M22 19h-6"></path></svg>
+          </div>
+          <div style="flex:1;">
+            <h2 style="font-size:20px;line-height:28px;font-weight:700;margin:0 0 2px;color:var(--fg-primary);">{{ modalTitle }}</h2>
+            <p style="font-size:15px;line-height:22px;color:var(--fg-tertiary);margin:0;">{{ modalDesc }}</p>
+          </div>
+          <span role="button" aria-label="Close" onClick="{{ closeModal }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+          </span>
+        </div>
+
+        <div style="flex:1;overflow-y:auto;padding:28px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="First Name" required="{{ true }}" disabled="{{ inputsDisabled }}" value="{{ fFirst }}" on-change="{{ onFirst }}" error="{{ eFirst }}" placeholder="e.g. “Kojo”" size="lg" hint-size="100%,76px"></x-import>
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Last Name" required="{{ true }}" disabled="{{ inputsDisabled }}" value="{{ fLast }}" on-change="{{ onLast }}" error="{{ eLast }}" placeholder="e.g. “Nkrumah”" size="lg" hint-size="100%,76px"></x-import>
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Email" type="email" required="{{ true }}" disabled="{{ inputsDisabled }}" value="{{ fEmail }}" on-change="{{ onEmail }}" error="{{ eEmail }}" placeholder="e.g. “kojo@myfirm.com”" size="lg" hint-size="100%,76px"></x-import>
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Phone Number" type="tel" disabled="{{ inputsDisabled }}" value="{{ fPhone }}" on-change="{{ onPhone }}" placeholder="e.g. “+233 20 123 4567”" size="lg" hint-size="100%,76px"></x-import>
+          </div>
+
+          <h3 style="font-size:17px;font-weight:700;margin:32px 0 8px;color:var(--fg-primary);">What can this teammate access?</h3>
+          <div>
+            <sc-for list="{{ permsList }}" as="p" hint-placeholder-count="6">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:{{ p.border }};">
+                <div style="min-width:0;">
+                  <div style="font-size:16px;font-weight:600;color:var(--fg-secondary);">{{ p.title }}</div>
+                  <div style="font-size:14px;line-height:20px;color:var(--fg-tertiary);margin-top:2px;">{{ p.desc }}</div>
+                </div>
+                <div style="flex-shrink:0;padding-top:2px;">
+                  <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Toggle" checked="{{ p.on }}" disabled="{{ p.disabled }}" on-change="{{ p.onToggle }}" hint-size="44px,24px"></x-import>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ isInviteView }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px 28px;border-top:1px solid var(--border-secondary);flex-shrink:0;">
+            <button onClick="{{ closeModal }}" style="display:inline-flex;align-items:center;justify-content:center;padding:14px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Cancel</button>
+            <button onClick="{{ saveMember }}" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+              {{ saveLabel }}
+            </button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isOwnerView }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px 28px;border-top:1px solid var(--border-secondary);flex-shrink:0;">
+            <div></div>
+            <button onClick="{{ closeModal }}" style="display:inline-flex;align-items:center;justify-content:center;padding:14px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Done</button>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:10px;padding:13px 20px;background:var(--gray-900);color:#fff;border-radius:12px;box-shadow:var(--shadow-lg);font-size:14.5px;font-weight:600;white-space:nowrap;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--success-400)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      {{ toastMsg }}
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PERMS = [
+  { key: 'fullAccess', title: 'Full Access - Admin', desc: 'Has access to all features and can manage other teammates.' },
+  { key: 'manageClients', title: 'Manage clients', desc: 'Add and update client companies and their payroll approvers.' },
+  { key: 'manageEmployees', title: 'Manage client employees', desc: 'Add, update, and manage employee records for clients.' },
+  { key: 'runPayroll', title: 'Run payroll', desc: 'Draft and submit client payrolls for approval and payment.' },
+  { key: 'financeFullAccess', title: 'Wallet & finance access', desc: 'View the agency wallet, allocate client budgets, and pay approved runs.' },
+  { key: 'roleManagement', title: 'Role management', desc: 'Invite teammates and manage their permissions.' },
+];
+
+function initials(first, last) {
+  return (((first || '').trim()[0] || '') + ((last || '').trim()[0] || '')).toUpperCase() || '?';
+}
+
+class Component extends DCLogic {
+  state = {
+    members: [],
+    owner: { firstName: '', lastName: '', email: '', company: '' },
+    modalOpen: false, editIndex: null,
+    form: { firstName: '', lastName: '', email: '', phone: '' },
+    perms: {}, errors: {},
+    toastOpen: false, toastMsg: '',
+  };
+  toastTimer = null;
+
+  componentDidMount() {
+    const load = () => {
+      if (!window.AppState) return false;
+      const a = window.AppState.getAccount();
+      let members = [];
+      try { const v = localStorage.getItem('dxp_team'); members = v ? JSON.parse(v) : []; } catch (e) {}
+      this.setState({
+        owner: { firstName: a.firstName || '', lastName: a.lastName || '', email: a.email || '', company: a.company || '' },
+        members: Array.isArray(members) ? members : [],
+      });
+      return true;
+    };
+    if (!load()) { let n = 0; const poll = () => { if (load() || n++ > 20) return; setTimeout(poll, 30); }; poll(); }
+  }
+  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); }
+
+  _save(members) {
+    try { localStorage.setItem('dxp_team', JSON.stringify(members)); } catch (e) {}
+    this.setState({ members });
+  }
+  showToast(msg) {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.setState({ toastOpen: true, toastMsg: msg });
+    this.toastTimer = setTimeout(() => this.setState({ toastOpen: false }), 2600);
+  }
+
+  freshPerms() { const p = {}; for (const d of PERMS) p[d.key] = false; return p; }
+
+  openInvite = () => this.setState({ modalOpen: true, editIndex: null, form: { firstName: '', lastName: '', email: '', phone: '' }, perms: this.freshPerms(), errors: {} });
+  openOwner = () => {
+    const o = this.state.owner;
+    const perms = {}; for (const d of PERMS) perms[d.key] = true;
+    this.setState({ modalOpen: true, editIndex: 'owner', form: { firstName: o.firstName, lastName: o.lastName, email: o.email, phone: '' }, perms, errors: {} });
+  };
+  openMember = (i) => () => {
+    const m = this.state.members[i];
+    this.setState({ modalOpen: true, editIndex: i, form: { firstName: m.firstName, lastName: m.lastName, email: m.email, phone: m.phone || '' }, perms: { ...(m.perms || this.freshPerms()) }, errors: {} });
+  };
+  closeModal = () => this.setState({ modalOpen: false });
+
+  setField(name, value) { this.setState(s => ({ form: { ...s.form, [name]: value }, errors: { ...s.errors, [name]: '' } })); }
+  togglePerm(key, checked) {
+    if (key === 'fullAccess') { const next = {}; for (const d of PERMS) next[d.key] = checked; this.setState({ perms: next }); return; }
+    this.setState(s => ({ perms: { ...s.perms, [key]: checked } }));
+  }
+
+  saveMember = () => {
+    const f = this.state.form;
+    const errors = {};
+    if (!f.firstName.trim()) errors.firstName = 'First name is required';
+    if (!f.lastName.trim()) errors.lastName = 'Last name is required';
+    if (!f.email.trim()) errors.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) errors.email = 'Enter a valid email';
+    if (Object.keys(errors).length) { this.setState({ errors }); return; }
+    const i = this.state.editIndex;
+    const members = this.state.members.slice();
+    if (typeof i === 'number') {
+      members[i] = { ...members[i], firstName: f.firstName.trim(), lastName: f.lastName.trim(), email: f.email.trim(), phone: f.phone.trim(), perms: { ...this.state.perms }, fullAccess: !!this.state.perms.fullAccess };
+      this._save(members);
+      this.setState({ modalOpen: false });
+      this.showToast('Teammate updated');
+    } else {
+      members.push({ firstName: f.firstName.trim(), lastName: f.lastName.trim(), email: f.email.trim(), phone: f.phone.trim(), perms: { ...this.state.perms }, fullAccess: !!this.state.perms.fullAccess, status: 'invited', invitedAt: Date.now() });
+      this._save(members);
+      this.setState({ modalOpen: false });
+      this.showToast('Invite sent to ' + f.email.trim());
+    }
+  };
+
+  resend = (i) => (ev) => { ev.stopPropagation(); this.showToast('Invite resent to ' + this.state.members[i].email); };
+  remove = (i) => (ev) => { ev.stopPropagation(); const m = this.state.members[i]; this._save(this.state.members.filter((_, idx) => idx !== i)); this.showToast((m.status === 'invited' ? 'Invite revoked for ' : 'Removed ') + (m.firstName + ' ' + m.lastName).trim()); };
+
+  renderVals() {
+    const o = this.state.owner;
+    const ownerName = ((o.firstName || '') + ' ' + (o.lastName || '')).trim() || 'Account owner';
+    const FULL_BG = '#EFF4FF', FULL_FG = '#3538CD';
+    const RES_BG = '#ECEEF6', RES_FG = '#363F72';
+    const ST_ACTIVE = { label: 'Active', fg: 'var(--success-700)', bg: 'var(--success-50)', bd: '#ABEFC6', dot: 'var(--success-500)' };
+    const ST_PENDING = { label: 'Invite pending', fg: '#B54708', bg: '#FFFAEB', bd: '#FEDF89', dot: '#F79009' };
+
+    const ownerRow = {
+      name: ownerName, email: o.email || '', initials: initials(o.firstName || ownerName, o.lastName || (ownerName.split(' ')[1] || '')),
+      badge: 'Full Access', badgeBg: FULL_BG, badgeColor: FULL_FG,
+      status: ST_ACTIVE.label, stFg: ST_ACTIVE.fg, stBg: ST_ACTIVE.bg, stBd: ST_ACTIVE.bd, stDot: ST_ACTIVE.dot,
+      isOwner: true, isPending: false, canRemove: false,
+      onOpen: this.openOwner, onResend: () => {}, onRemove: () => {},
+    };
+    const memberRows = this.state.members.map((m, i) => {
+      const pending = (m.status || 'invited') === 'invited';
+      const st = pending ? ST_PENDING : ST_ACTIVE;
+      return {
+        name: (m.firstName + ' ' + m.lastName).trim(), email: m.email, initials: initials(m.firstName, m.lastName),
+        badge: m.fullAccess ? 'Full Access' : 'Limited Access',
+        badgeBg: m.fullAccess ? FULL_BG : RES_BG, badgeColor: m.fullAccess ? FULL_FG : RES_FG,
+        status: st.label, stFg: st.fg, stBg: st.bg, stBd: st.bd, stDot: st.dot,
+        isOwner: false, isPending: pending, canRemove: true,
+        onOpen: this.openMember(i), onResend: this.resend(i), onRemove: this.remove(i),
+      };
+    });
+
+    const isOwnerEdit = this.state.editIndex === 'owner';
+    const adminOn = !!this.state.perms.fullAccess;
+    const permsList = PERMS.map((p, i) => ({
+      ...p,
+      on: !!this.state.perms[p.key],
+      disabled: isOwnerEdit || (adminOn && p.key !== 'fullAccess'),
+      onToggle: (checked) => this.togglePerm(p.key, checked),
+      border: i === PERMS.length - 1 ? 'none' : '1px solid var(--border-secondary)',
+    }));
+
+    const e = this.state.errors;
+    const editing = typeof this.state.editIndex === 'number';
+    return {
+      today: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+      firmName: o.company || 'your firm',
+      rows: [ownerRow, ...memberRows],
+      ownerOnly: this.state.members.length === 0,
+      openInvite: this.openInvite,
+      modalOpen: this.state.modalOpen,
+      isOwnerView: isOwnerEdit, isInviteView: !isOwnerEdit,
+      inputsDisabled: isOwnerEdit,
+      modalTitle: isOwnerEdit ? 'Your access' : (editing ? 'Edit teammate' : 'Invite a teammate'),
+      modalDesc: isOwnerEdit ? "You're the account owner — you have full access to everything." : (editing ? 'Update their details and what they can access.' : "They'll get an email to set up their account and join " + (o.company || 'your firm') + '.'),
+      saveLabel: editing ? 'Save changes' : 'Send Invite',
+      closeModal: this.closeModal, saveMember: this.saveMember,
+      stop: (ev) => ev.stopPropagation(),
+      permsList,
+      fFirst: this.state.form.firstName, fLast: this.state.form.lastName, fEmail: this.state.form.email, fPhone: this.state.form.phone,
+      onFirst: (ev) => this.setField('firstName', ev.target.value),
+      onLast: (ev) => this.setField('lastName', ev.target.value),
+      onEmail: (ev) => this.setField('email', ev.target.value),
+      onPhone: (ev) => this.setField('phone', ev.target.value),
+      eFirst: e.firstName || '', eLast: e.lastName || '', eEmail: e.email || '',
+      toastOpen: this.state.toastOpen, toastMsg: this.state.toastMsg,
+    };
+  }
+}
+</script>
+</body>
+</html>
