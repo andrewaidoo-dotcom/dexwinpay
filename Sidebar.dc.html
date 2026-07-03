@@ -30,48 +30,22 @@
   </div>
 
   <nav data-tour="nav" style="flex: 1; overflow-y: auto; padding: 4px 16px 16px; display: flex; flex-direction: column; gap: 2px; padding-top: 24px">
-    <a href="Dashboard Page.dc.html" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.dashboard.bg }};color:{{ nav.dashboard.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.dashboard.hover }}">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="{{ nav.dashboard.stroke }}" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5H3.83333C3.36662 2.5 3.13327 2.5 2.95501 2.59083C2.79821 2.67072 2.67072 2.79821 2.59083 2.95501C2.5 3.13327 2.5 3.36662 2.5 3.83333V7C2.5 7.46671 2.5 7.70007 2.59083 7.87833C2.67072 8.03513 2.79821 8.16261 2.95501 8.24251C3.13327 8.33333 3.36662 8.33333 3.83333 8.33333H7C7.46671 8.33333 7.70007 8.33333 7.87833 8.24251C8.03513 8.16261 8.16261 8.03513 8.24251 7.87833C8.33333 7.70007 8.33333 7.46671 8.33333 7V3.83333C8.33333 3.36662 8.33333 3.13327 8.24251 2.95501C8.16261 2.79821 8.03513 2.67072 7.87833 2.59083C7.70007 2.5 7.46671 2.5 7 2.5Z"></path><path d="M16.1667 2.5H13C12.5333 2.5 12.2999 2.5 12.1217 2.59083C11.9649 2.67072 11.8374 2.79821 11.7575 2.95501C11.6667 3.13327 11.6667 3.36662 11.6667 3.83333V7C11.6667 7.46671 11.6667 7.70007 11.7575 7.87833C11.8374 8.03513 11.9649 8.16261 12.1217 8.24251C12.2999 8.33333 12.5333 8.33333 13 8.33333H16.1667C16.6334 8.33333 16.8667 8.33333 17.045 8.24251C17.2018 8.16261 17.3293 8.03513 17.4092 7.87833C17.5 7.70007 17.5 7.46671 17.5 7V3.83333C17.5 3.36662 17.5 3.13327 17.4092 2.95501C17.3293 2.79821 17.2018 2.67072 17.045 2.59083C16.8667 2.5 16.6334 2.5 16.1667 2.5Z"></path><path d="M16.1667 11.6667H13C12.5333 11.6667 12.2999 11.6667 12.1217 11.7575C11.9649 11.8374 11.8374 11.9649 11.7575 12.1217C11.6667 12.2999 11.6667 12.5333 11.6667 13V16.1667C11.6667 16.6334 11.6667 16.8667 11.7575 17.045C11.8374 17.2018 11.9649 17.3293 12.1217 17.4092C12.2999 17.5 12.5333 17.5 13 17.5H16.1667C16.6334 17.5 16.8667 17.5 17.045 17.4092C17.2018 17.3293 17.3293 17.2018 17.4092 17.045C17.5 16.8667 17.5 16.6334 17.5 16.1667V13C17.5 12.5333 17.5 12.2999 17.4092 12.1217C17.3293 11.9649 17.2018 11.8374 17.045 11.7575C16.8667 11.6667 16.6334 11.6667 16.1667 11.6667Z"></path><path d="M7 11.6667H3.83333C3.36662 11.6667 3.13327 11.6667 2.95501 11.7575C2.79821 11.8374 2.67072 11.9649 2.59083 12.1217C2.5 12.2999 2.5 12.5333 2.5 13V16.1667C2.5 16.6334 2.5 16.8667 2.59083 17.045C2.67072 17.2018 2.79821 17.3293 2.95501 17.4092C3.13327 17.5 3.36662 17.5 3.83333 17.5H7C7.46671 17.5 7.70007 17.5 7.87833 17.4092C8.03513 17.3293 8.16261 17.2018 8.24251 17.045C8.33333 16.8667 8.33333 16.6334 8.33333 16.1667V13C8.33333 12.5333 8.33333 12.2999 8.24251 12.1217C8.16261 11.9649 8.03513 11.8374 7.87833 11.7575C7.70007 11.6667 7.46671 11.6667 7 11.6667Z"></path></svg>
-      <span style="flex:1;">Dashboard</span>
-    </a>
-
-    <sc-if value="{{ isAgency }}" hint-placeholder-val="{{ false }}">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--fg-quaternary);padding:18px 12px 6px;">My Agency</div>
-      <a href="Clients Page.dc.html" data-tour="nav-clients" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.clients.bg }};color:{{ nav.clients.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.clients.hover }}">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.clients.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-        <span style="flex:1;">Clients</span>
-        <sc-if value="{{ showClientCount }}" hint-placeholder-val="{{ false }}">
-          <span style="font-size:12px;font-weight:700;color:var(--fg-tertiary);padding:3px 10px;border-radius:999px;border:1px solid var(--border-secondary);font-variant-numeric:tabular-nums;">{{ clientCount }}</span>
-        </sc-if>
-      </a>
-      <a href="Company Wallet.dc.html" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.wallets.bg }};color:{{ nav.wallets.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.wallets.hover }}">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.wallets.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg>
-        <span style="flex:1;">Wallets</span>
-        <sc-if value="{{ showWalletBalance }}" hint-placeholder-val="{{ false }}">
-          <span style="font-size:12px;font-weight:700;color:var(--fg-tertiary);padding:3px 10px;border-radius:999px;border:1px solid var(--border-secondary);font-variant-numeric:tabular-nums;">{{ wallet }}</span>
-        </sc-if>
-        <sc-if value="{{ showWalletPending }}" hint-placeholder-val="{{ false }}">
-          <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#B54708;background:#FFFAEB;padding:3px 9px;border-radius:999px;border:1px solid #FEDF89;">
-            <span style="width:5px;height:5px;border-radius:999px;background:#F79009;"></span>Pending
-          </span>
-        </sc-if>
-      </a>
-      <a href="Teammates Page.dc.html" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.teammates.bg }};color:{{ nav.teammates.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.teammates.hover }}">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.teammates.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path></svg>
-        <span style="flex:1;">Teammates</span>
-      </a>
-
-      <div style="display:flex;align-items:center;gap:8px;padding:22px 12px 6px;">
-        <span style="flex:1;min-width:0;font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--fg-quaternary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ clientSectionLabel }}</span>
+    <sc-if value="{{ hasActiveClient }}" hint-placeholder-val="{{ false }}">
+      <div style="margin:0 0 10px;padding:10px 12px;border:1px solid var(--border-secondary);border-radius:12px;background:var(--bg-primary);box-shadow:var(--shadow-xs);display:flex;align-items:center;gap:10px;">
+        <span style="width:32px;height:32px;flex-shrink:0;border-radius:9px;background:var(--brand-50);color:var(--brand-700);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:12px;">{{ activeClientInit }}</span>
+        <span style="flex:1;min-width:0;">
+          <span style="display:block;font-size:9.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);line-height:1.4;">Client</span>
+          <span style="display:block;font-size:13.5px;font-weight:700;color:var(--fg-primary);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ clientSectionLabel }}</span>
+        </span>
         <sc-if value="{{ showClientSwitch }}" hint-placeholder-val="{{ false }}">
-          <span role="button" onClick="{{ toggleClient }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--brand-700);cursor:pointer;padding:2px 6px;border-radius:6px;transition:background 120ms ease;" style-hover="background:var(--brand-50);">
+          <span role="button" onClick="{{ toggleClient }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--brand-700);cursor:pointer;padding:4px 8px;border-radius:7px;transition:background 120ms ease;" style-hover="background:var(--brand-50);">
             Switch
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
           </span>
         </sc-if>
       </div>
       <sc-if value="{{ clientOpen }}" hint-placeholder-val="{{ false }}">
-        <div style="margin:2px 0 6px;border:1px solid var(--border-secondary);border-radius:12px;background:var(--bg-primary);overflow:hidden;">
+        <div style="margin:0 0 10px;border:1px solid var(--border-secondary);border-radius:12px;background:var(--bg-primary);overflow:hidden;">
           <div style="padding:4px;display:flex;flex-direction:column;gap:1px;max-height:220px;overflow-y:auto;">
             <sc-for list="{{ clientList }}" as="c" hint-placeholder-count="2">
               <button onClick="{{ c.onSelect }}" style="display:flex;align-items:center;gap:9px;width:100%;box-sizing:border-box;text-align:left;padding:8px 9px;background:{{ c.bg }};border:none;border-radius:9px;cursor:pointer;font-family:var(--font-body);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
@@ -89,17 +63,39 @@
           </a>
         </div>
       </sc-if>
+    </sc-if>
+    <a href="Dashboard Page.dc.html" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.dashboard.bg }};color:{{ nav.dashboard.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.dashboard.hover }}">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="{{ nav.dashboard.stroke }}" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5H3.83333C3.36662 2.5 3.13327 2.5 2.95501 2.59083C2.79821 2.67072 2.67072 2.79821 2.59083 2.95501C2.5 3.13327 2.5 3.36662 2.5 3.83333V7C2.5 7.46671 2.5 7.70007 2.59083 7.87833C2.67072 8.03513 2.79821 8.16261 2.95501 8.24251C3.13327 8.33333 3.36662 8.33333 3.83333 8.33333H7C7.46671 8.33333 7.70007 8.33333 7.87833 8.24251C8.03513 8.16261 8.16261 8.03513 8.24251 7.87833C8.33333 7.70007 8.33333 7.46671 8.33333 7V3.83333C8.33333 3.36662 8.33333 3.13327 8.24251 2.95501C8.16261 2.79821 8.03513 2.67072 7.87833 2.59083C7.70007 2.5 7.46671 2.5 7 2.5Z"></path><path d="M16.1667 2.5H13C12.5333 2.5 12.2999 2.5 12.1217 2.59083C11.9649 2.67072 11.8374 2.79821 11.7575 2.95501C11.6667 3.13327 11.6667 3.36662 11.6667 3.83333V7C11.6667 7.46671 11.6667 7.70007 11.7575 7.87833C11.8374 8.03513 11.9649 8.16261 12.1217 8.24251C12.2999 8.33333 12.5333 8.33333 13 8.33333H16.1667C16.6334 8.33333 16.8667 8.33333 17.045 8.24251C17.2018 8.16261 17.3293 8.03513 17.4092 7.87833C17.5 7.70007 17.5 7.46671 17.5 7V3.83333C17.5 3.36662 17.5 3.13327 17.4092 2.95501C17.3293 2.79821 17.2018 2.67072 17.045 2.59083C16.8667 2.5 16.6334 2.5 16.1667 2.5Z"></path><path d="M16.1667 11.6667H13C12.5333 11.6667 12.2999 11.6667 12.1217 11.7575C11.9649 11.8374 11.8374 11.9649 11.7575 12.1217C11.6667 12.2999 11.6667 12.5333 11.6667 13V16.1667C11.6667 16.6334 11.6667 16.8667 11.7575 17.045C11.8374 17.2018 11.9649 17.3293 12.1217 17.4092C12.2999 17.5 12.5333 17.5 13 17.5H16.1667C16.6334 17.5 16.8667 17.5 17.045 17.4092C17.2018 17.3293 17.3293 17.2018 17.4092 17.045C17.5 16.8667 17.5 16.6334 17.5 16.1667V13C17.5 12.5333 17.5 12.2999 17.4092 12.1217C17.3293 11.9649 17.2018 11.8374 17.045 11.7575C16.8667 11.6667 16.6334 11.6667 16.1667 11.6667Z"></path><path d="M7 11.6667H3.83333C3.36662 11.6667 3.13327 11.6667 2.95501 11.7575C2.79821 11.8374 2.67072 11.9649 2.59083 12.1217C2.5 12.2999 2.5 12.5333 2.5 13V16.1667C2.5 16.6334 2.5 16.8667 2.59083 17.045C2.67072 17.2018 2.79821 17.3293 2.95501 17.4092C3.13327 17.5 3.36662 17.5 3.83333 17.5H7C7.46671 17.5 7.70007 17.5 7.87833 17.4092C8.03513 17.3293 8.16261 17.2018 8.24251 17.045C8.33333 16.8667 8.33333 16.6334 8.33333 16.1667V13C8.33333 12.5333 8.33333 12.2999 8.24251 12.1217C8.16261 11.9649 8.03513 11.8374 7.87833 11.7575C7.70007 11.6667 7.46671 11.6667 7 11.6667Z"></path></svg>
+      <span style="flex:1;">Dashboard</span>
+    </a>
 
-      <sc-if value="{{ hasActiveClient }}" hint-placeholder-val="{{ false }}">
-        <a href="People Page.dc.html" data-tour="nav-people" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.people.bg }};color:{{ nav.people.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.people.hover }}">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.people.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          <span style="flex:1;">People</span>
-        </a>
-        <a href="Payroll Page.dc.html" data-tour="nav-payroll" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.payroll.bg }};color:{{ nav.payroll.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.payroll.hover }}">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.payroll.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1.5L8 22l2-1.5L12 22l2-1.5L16 22l2-1.5L20 22V2l-2 1.5L16 2l-2 1.5L12 2l-2 1.5L8 2 6 3.5 4 2Z"></path><path d="m9 12 2 2 4-4"></path></svg>
-          <span style="flex:1;">Payroll</span>
-        </a>
-      </sc-if>
+    <sc-if value="{{ isAgency }}" hint-placeholder-val="{{ false }}">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--fg-quaternary);padding:18px 12px 6px;">My Agency</div>
+      <a href="Clients Page.dc.html" data-tour="nav-clients" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.clients.bg }};color:{{ nav.clients.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.clients.hover }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.clients.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+        <span style="flex:1;">Clients</span>
+        <sc-if value="{{ showClientCount }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:12px;font-weight:700;color:var(--fg-tertiary);padding:3px 10px;border-radius:999px;border:1px solid var(--border-secondary);font-variant-numeric:tabular-nums;">{{ clientCount }}</span>
+        </sc-if>
+      </a>
+      <a href="Company Wallet.dc.html" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.wallets.bg }};color:{{ nav.wallets.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.wallets.hover }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.wallets.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg>
+        <span style="flex:1;">Wallet</span>
+        <sc-if value="{{ showWalletBalance }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:12px;font-weight:700;color:var(--fg-tertiary);padding:3px 10px;border-radius:999px;border:1px solid var(--border-secondary);font-variant-numeric:tabular-nums;">{{ wallet }}</span>
+        </sc-if>
+        <sc-if value="{{ showWalletPending }}" hint-placeholder-val="{{ false }}">
+          <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#B54708;background:#FFFAEB;padding:3px 9px;border-radius:999px;border:1px solid #FEDF89;">
+            <span style="width:5px;height:5px;border-radius:999px;background:#F79009;"></span>Pending
+          </span>
+        </sc-if>
+      </a>
+      <a href="Teammates Page.dc.html" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.teammates.bg }};color:{{ nav.teammates.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.teammates.hover }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.teammates.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path></svg>
+        <span style="flex:1;">Teammates</span>
+      </a>
+
+
       <sc-if value="{{ noActiveClient }}" hint-placeholder-val="{{ false }}">
         <a href="Clients Page.dc.html" style="display:flex;align-items:center;gap:10px;margin:2px 0;padding:12px;border:1px dashed var(--border-primary);border-radius:12px;text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
@@ -121,7 +117,7 @@
     </a>
     <a href="Company Wallet.dc.html" data-tour="wallet" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.wallets.bg }};color:{{ nav.wallets.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.wallets.hover }}">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.wallets.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg>
-      <span style="flex:1;">Wallets</span>
+      <span style="flex:1;">Wallet</span>
       <sc-if value="{{ showWalletBalance }}" hint-placeholder-val="{{ false }}">
         <span style="font-size:12px;font-weight:700;color:var(--fg-tertiary);padding:3px 10px;border-radius:999px;border:1px solid var(--border-secondary);font-variant-numeric:tabular-nums;">{{ wallet }}</span>
       </sc-if>
@@ -444,6 +440,7 @@ class Component extends DCLogic {
       clientOpen: this.state.clientOpen, toggleClient: this.toggleClient,
       clientList, noClients: clients.length === 0,
       clientSectionLabel: activeClient ? activeClient.name : 'Client',
+      activeClientInit: activeClient ? cInit(activeClient.name) : '\u2014',
       showClientSwitch: clients.length > 0,
       hasActiveClient: agency && !!activeClient,
       noActiveClient: agency && !activeClient,

@@ -30,7 +30,9 @@
   //   { id, name, contactName, contactEmail, contactPhone, industry, location, addedAt }
   var CLKEY = 'dxp_clients';
   function _cuid() { return 'cl-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7); }
-  function getClients() { try { var v = localStorage.getItem(CLKEY); var a = v ? JSON.parse(v) : []; return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function _allClients() { try { var v = localStorage.getItem(CLKEY); var a = v ? JSON.parse(v) : []; return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  // Public list excludes drafts — a client only "exists" once the add-client review is passed.
+  function getClients() { return _allClients().filter(function (c) { return c && !c.draft; }); }
   function setClients(list) { try { localStorage.setItem(CLKEY, JSON.stringify(Array.isArray(list) ? list : [])); } catch (e) {} return getClients(); }
   function addClient(c) {
     c = c || {};
@@ -39,15 +41,15 @@
     rec.id = c.id || _cuid();
     rec.name = (c.name || '').trim();
     rec.addedAt = c.addedAt || Date.now();
-    var l = getClients(); l.push(rec); setClients(l); return rec;
+    var l = _allClients(); l.push(rec); setClients(l); return rec;
   }
   function updateClient(id, patch) {
-    var l = getClients();
+    var l = _allClients();
     for (var i = 0; i < l.length; i++) { if (l[i].id === id) { for (var k3 in patch) { if (patch[k3] != null) l[i][k3] = patch[k3]; } break; } }
     setClients(l); return getClientById(id);
   }
-  function removeClient(id) { setClients(getClients().filter(function (c) { return c.id !== id; })); }
-  function getClientById(id) { var l = getClients(); for (var i = 0; i < l.length; i++) { if (l[i].id === id) return l[i]; } return null; }
+  function removeClient(id) { setClients(_allClients().filter(function (c) { return c.id !== id; })); }
+  function getClientById(id) { var l = _allClients(); for (var i = 0; i < l.length; i++) { if (l[i].id === id) return l[i]; } return null; }
 
   // Which client the agency is currently working in. '' = none selected.
   var ACKEY = 'dxp_active_client';

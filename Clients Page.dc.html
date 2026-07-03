@@ -226,8 +226,7 @@ class Component extends DCLogic {
   };
 
   openClient = (id) => () => {
-    if (window.AppState && window.AppState.setActiveClient) window.AppState.setActiveClient(id);
-    window.location.href = 'Dashboard Page.dc.html';
+    window.location.href = 'Client Overview.dc.html?id=' + encodeURIComponent(id);
   };
 
   renderVals() {
