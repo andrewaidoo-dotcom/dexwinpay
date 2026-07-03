@@ -29,9 +29,18 @@
   <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
     <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);">
       <div style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;">
-        <a href="People Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">People</a>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
-        <span style="color:var(--brand-700);">{{ headerName }}</span>
+        <sc-if value="{{ inClientCtx }}" hint-placeholder-val="{{ true }}">
+          <a href="Clients Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Clients</a>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          <a href="Client Instace.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ bcClientName }}</a>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          <span style="color:var(--brand-700);">{{ headerName }}</span>
+        </sc-if>
+        <sc-if value="{{ notClientCtx }}" hint-placeholder-val="{{ false }}">
+          <a href="People Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">People</a>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          <span style="color:var(--brand-700);">{{ headerName }}</span>
+        </sc-if>
       </div>
       <span role="button" aria-label="Notifications" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
@@ -54,9 +63,9 @@
       <sc-if value="{{ found }}" hint-placeholder-val="{{ true }}">
         <div style="max-width: 980px; margin: 0 auto; padding: 24px 40px 64px; width: 720px">
 
-          <a href="People Page.dc.html" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;font-size:15px;font-weight:600;color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">
+          <a href="{{ empBackHref }}" onClick="{{ backToList }}" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;font-size:15px;font-weight:600;color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            Back to people
+            {{ empBackLabel }}
           </a>
 
           <!-- PROFILE HEADER -->
@@ -467,9 +476,14 @@ class Component extends DCLogic {
 
   renderVals() {
     const s = this.state;
-    if (!s.ready) return { found: false, notFound: false, headerName: '', cards: [], toast: null, dismissToast: this.dismissToast };
+    const _cl = (window.AppState && window.AppState.getActiveClient) ? window.AppState.getActiveClient() : null;
+    const _ag = !!(window.AppState && window.AppState.isAgency && window.AppState.isAgency());
+    const inClientCtx = !!(_ag && _cl);
+    const notClientCtx = !inClientCtx;
+    const bcClientName = _cl ? _cl.name : 'Client';
+    if (!s.ready) return { found: false, notFound: false, headerName: '', cards: [], toast: null, dismissToast: this.dismissToast, inClientCtx, notClientCtx, bcClientName };
     const rec = s.rec;
-    if (!rec) return { found: false, notFound: true, headerName: 'Not found', cards: [], toast: s.toast, dismissToast: this.dismissToast };
+    if (!rec) return { found: false, notFound: true, headerName: 'Not found', cards: [], toast: s.toast, dismissToast: this.dismissToast, inClientCtx, notClientCtx, bcClientName };
 
     const name = rec.fullName || rec.name || 'Employee';
     const role = rec.jobRole || rec.role || '\u2014';
@@ -601,6 +615,10 @@ class Component extends DCLogic {
       viewing: !editing,
       editing,
       headerName: name,
+      inClientCtx, notClientCtx, bcClientName,
+      empBackHref: inClientCtx ? 'Client Instace.dc.html' : 'People Page.dc.html',
+      empBackLabel: inClientCtx ? 'Back to employees' : 'Back to people',
+      backToList: () => { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} },
       name,
       nameVal: F.fullName == null ? '' : F.fullName,
       initials: rec.initials || initials(name),

@@ -37,11 +37,20 @@
     <!-- TOPBAR with breadcrumb -->
     <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:20;">
       <div style="display:flex;align-items:center;gap:9px;min-width:0;font-size:15px;font-weight:600;">
-        <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Payroll</a>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ periodLabel }} payroll</a>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        <span style="color:var(--brand-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ name }}</span>
+        <sc-if value="{{ inClientCtx }}" hint-placeholder-val="{{ true }}">
+          <a href="Clients Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Clients</a>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <a href="Client Instace.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ bcClientName }}</a>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span style="color:var(--brand-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ name }}</span>
+        </sc-if>
+        <sc-if value="{{ notClientCtx }}" hint-placeholder-val="{{ false }}">
+          <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Payroll</a>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ periodLabel }} payroll</a>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span style="color:var(--brand-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ name }}</span>
+        </sc-if>
       </div>
       <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
         <div style="display:flex;align-items:center;gap:9px;color:var(--fg-secondary);font-size:15px;font-weight:500;">
@@ -561,14 +570,18 @@ class Component extends DCLogic {
     this.persist(items); return { items };
   });
 
-  goBackStep = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (window.history.length > 1) window.history.back(); else window.location.href = 'Payroll Page.dc.html'; };
+  goBackStep = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); const cl = window.AppState && window.AppState.getActiveClient && window.AppState.getActiveClient(); const ag = window.AppState && window.AppState.isAgency && window.AppState.isAgency(); if (ag && cl) { window.location.href = 'Client Instace.dc.html'; } else if (window.history.length > 1) { window.history.back(); } else { window.location.href = 'Payroll Page.dc.html'; } };
 
   renderVals() {
     const s = this.state;
     const emp = s.emp;
     const periodLabel = periodLabelOf(s.periodId);
+    const _cl = (window.AppState && window.AppState.getActiveClient) ? window.AppState.getActiveClient() : null;
+    const _agency = !!(window.AppState && window.AppState.isAgency && window.AppState.isAgency());
+    const inClientCtx = !!(_agency && _cl);
+    const bcClientName = _cl ? _cl.name : 'Client';
     if (s.loaded && !emp) {
-      return { notFound: true, found: false, goBackStep: this.goBackStep, periodLabel, name: '', today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) };
+      return { notFound: true, found: false, goBackStep: this.goBackStep, periodLabel, inClientCtx, notClientCtx: !inClientCtx, bcClientName, name: '', today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) };
     }
     const e = emp || {};
     const firstName = (e.name || '').split(' ')[0];
@@ -651,7 +664,7 @@ class Component extends DCLogic {
     return {
       notFound: false, found: true,
       today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-      periodLabel, name: e.name, firstName, initials: e.initials, role: e.role,
+      periodLabel, inClientCtx, notClientCtx: !inClientCtx, bcClientName, name: e.name, firstName, initials: e.initials, role: e.role,
       chipLabel: statusChip.label, chipColor: statusChip.color, chipBg: statusChip.bg, chipBorder: statusChip.border, chipDot: statusChip.dot,
       toast: s.toast,
       onDownload: () => this.showToast('Payslip for ' + e.name + ' downloaded as PDF.'),

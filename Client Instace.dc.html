@@ -65,8 +65,8 @@
     </div>
 
     <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
-      <div style="position:fixed;top:88px;right:40px;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:440px;padding:13px 16px 13px 18px;border-radius:12px;background:{{ toastBg }};color:{{ toastColor }};box-shadow:var(--shadow-lg);animation:toastIn 220ms ease;">
-        <div style="display:flex;align-items:center;gap:12px;font-size:15px;font-weight:600;">
+      <div style="position:fixed;top:0;left:0;right:0;z-index:2000;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 40px;background:{{ toastBg }};color:{{ toastColor }};box-shadow:var(--shadow-lg);animation:toastIn 220ms ease;">
+        <div style="display:flex;align-items:center;gap:16px;font-size:17px;font-weight:700;">
           <span innerHTML="{{ toastIcon }}" style="display:inline-flex;flex-shrink:0;"></span>
           {{ toast }}
         </div>
@@ -408,7 +408,7 @@
                     <span>People</span><span>Type</span><span>Role/Department</span><span>Status</span>
                   </div>
                   <sc-for list="{{ empPage }}" as="p" hint-placeholder-count="6">
-                    <div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1.4fr) 150px;gap:16px;padding:14px 24px;border-bottom:1px solid var(--border-tertiary);align-items:center;">
+                    <div onClick="{{ p.onOpen }}" style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1.4fr) 150px;gap:16px;padding:14px 24px;border-bottom:1px solid var(--border-tertiary);align-items:center;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
                       <div style="display:flex;align-items:center;gap:12px;min-width:0;">
                         <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;background:var(--gray-100);color:var(--fg-secondary);font-weight:700;font-size:14px;">{{ p.initials }}</span>
                         <div style="min-width:0;">
@@ -1053,7 +1053,7 @@
               </div>
             </div>
           </sc-if>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:22px;">
             <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;padding:18px 20px;">
               <div style="font-size:12px;font-weight:700;color:var(--fg-quaternary);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;">Employees</div>
               <div style="font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ employeeCount }}</div>
@@ -1061,6 +1061,11 @@
             <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;padding:18px 20px;">
               <div style="font-size:12px;font-weight:700;color:var(--fg-quaternary);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;">Total net pay</div>
               <div style="font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ totalNetDisplay }}</div>
+            </div>
+            <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;padding:18px 20px;">
+              <div style="font-size:12px;font-weight:700;color:var(--fg-quaternary);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;">Transaction charges</div>
+              <div style="font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ txnChargesDisplay }}</div>
+              <div style="font-size:11.5px;color:var(--fg-quaternary);margin-top:3px;">GH₵ 5 per employee</div>
             </div>
             <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;padding:18px 20px;">
               <div style="font-size:12px;font-weight:700;color:var(--fg-quaternary);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;">Employees paid</div>
@@ -2863,6 +2868,7 @@ class Component extends DCLogic {
     const stage = a.employees !== 'done' ? 'No employees' : (a.payroll !== 'done' ? 'Payroll not set up' : 'Ready to run');
     let savedTab = null; try { savedTab = localStorage.getItem('dxp_payroll_tab'); if (savedTab) localStorage.removeItem('dxp_payroll_tab'); } catch (e) {}
     let flash = null; try { flash = localStorage.getItem('dxp_payroll_flash'); if (flash) localStorage.removeItem('dxp_payroll_flash'); } catch (e) {}
+    if (savedTab) { const _tab = savedTab; setTimeout(() => this.setState({ setupTab: _tab }), 0); }
     this.setState({ tweaks: {
       setupStage: stage,
       role: this.props.role || TWEAK_DEFAULTS.role,
@@ -4017,7 +4023,7 @@ class Component extends DCLogic {
     const _roster = (window.AppState && window.AppState.getEmployees) ? window.AppState.getEmployees() : [];
     const empMissingCount = _roster.filter(p => empState(p) === 'missing').length;
     const empQ = (s.empSearch || '').trim().toLowerCase();
-    let empPeople = _roster.map((p) => {
+    let empPeople = _roster.map((p, i) => {
       const st = empState(p);
       const sc = EMP_STATUS2[st];
       let ph = p.phone || '';
@@ -4029,6 +4035,7 @@ class Component extends DCLogic {
         role: p.jobRole || p.role || p.position || 'Product Designer',
         dept: p.department || p.dept || 'IT/Software Dept.',
         statusLabel: sc.label, statusFg: sc.fg, statusBg: sc.bg, statusBorder: sc.border,
+        onOpen: () => { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} window.location.href = 'People Page.dc.html?i=' + i; },
       };
     });
     if (empQ) empPeople = empPeople.filter(r => (r.name + ' ' + r.type + ' ' + r.role + ' ' + r.dept + ' ' + r.phone).toLowerCase().includes(empQ));
@@ -4244,7 +4251,7 @@ class Component extends DCLogic {
     const toastColor = '#fff';
     const toastIcon = toastKind === 'error'
       ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-      : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
+      : '<svg width="32" height="32" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" stroke="#fff" stroke-opacity="0.18" stroke-width="2"/><circle cx="17" cy="17" r="12" stroke="#fff" stroke-opacity="0.4" stroke-width="2"/><path d="M12.5 17.2l3 3 6-6.4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
     // Floating preview-controls panel
     const mkOpt = (key, value, label) => {
@@ -4484,6 +4491,7 @@ class Component extends DCLogic {
       payModalOpen: s.payModal !== null, payModalPeriod: s.payModal === 'period', payModalCalc: s.payModal === 'calculating', payModalExists: s.payModal === 'exists', pendingPeriodLabel: s.pendingPeriod ? s.pendingPeriod.label : '', viewExisting: this.viewExisting, recalcExisting: this.recalcExisting, closePayModal: this.closePayModal, closePayModalBackdrop: this.closePayModalBackdrop,
       saveExitDraft: this.saveExitDraft,
       paidRatioLabel, employeesPaidRatio: paidRatioLabel,
+      txnChargesDisplay: 'GH\u20b5 ' + (5 * (((window.AppState && window.AppState.getEmployees && window.AppState.getEmployees().length) || 0))).toLocaleString('en-GH'),
       hasDrafts: s.drafts.length > 0,
       noDrafts: s.drafts.length === 0,
       draftsView: s.drafts.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).map(d => {

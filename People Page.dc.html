@@ -33,7 +33,7 @@
   <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
     <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);">
       <span style="display:none;"></span><div style="display:flex;align-items:center;gap:10px;font-family:var(--font-body);font-size:15px;font-weight:600;">
-        <span role="button" onClick="{{ goPeopleCrumb }}" style="color:{{ peopleCrumbColor }};cursor:{{ peopleCrumbCursor }};transition:color 120ms ease;">People</span>
+        <span role="button" onClick="{{ goPeopleCrumb }}" style="color:{{ peopleCrumbColor }};cursor:{{ peopleCrumbCursor }};transition:color 120ms ease;">{{ peopleCrumbLabel }}</span>
         <sc-if value="{{ adding }}" hint-placeholder-val="{{ false }}">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
           <span role="button" onClick="{{ goImportCrumb }}" style="color:{{ importCrumbColor }};cursor:{{ importCrumbCursor }};transition:color 120ms ease;">Import your employees</span>
@@ -1733,6 +1733,7 @@ class Component extends DCLogic {
   componentDidMount() {
     // Agency accounts work per client — pick one first.
     if (window.AppState && window.AppState.needsClientPick && window.AppState.needsClientPick()) { window.location.replace('Clients Page.dc.html'); return; }
+    try { var _iq = new URLSearchParams(location.search).get('i'); if (_iq !== null) { var _idx = parseInt(_iq, 10) || 0; var _cl = window.AppState && window.AppState.getActiveClient && window.AppState.getActiveClient(); var _ag = window.AppState && window.AppState.isAgency && window.AppState.isAgency(); if (_ag && _cl) this._returnClient = true; var _tryOpen = () => { var list = (window.AppState && window.AppState.getEmployees) ? window.AppState.getEmployees() : []; if (list.length) { this.setState({ employees: list }, () => this.openRosterEmp(_idx)); } else { setTimeout(_tryOpen, 40); } }; _tryOpen(); } } catch (e) {}
     this.applyTweak();
     // Resilience: if app-state.js hasn't defined window.AppState yet at mount,
     // retry briefly so a fresh load always reflects the saved roster.
@@ -1811,6 +1812,7 @@ class Component extends DCLogic {
   // (People › Import your employees › Name). Only a top-level step leaves the flow.
   headerBack = () => {
     const s = this.state;
+    if (this._returnClient) { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} window.location.href = 'Client Instace.dc.html'; return; }
     if (s.viewEmp != null) { this.setState({ viewEmp: null, empErrs: {} }); return; }   // employee → import list
     if (s.adding && !s.addNew && !s.rosterView && s.addingStep === 'upload') { this.setState({ addingStep: 'choose' }); return; } // upload → choose method
     this.requestExit();   // top level (import list / add-one / roster edit) → People, with unsaved-changes guard
@@ -1818,7 +1820,7 @@ class Component extends DCLogic {
   cancelExit = () => this.setState({ exitConfirm: false });
   confirmExit = () => this.flowExit();
   closeAdding = () => this.flowExit();
-  goPeopleCrumb = () => this.setState({ adding: false, viewEmp: null, rosterView: null, addNew: false });
+  goPeopleCrumb = () => { if (this._returnClient) { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} window.location.href = 'Client Instace.dc.html'; return; } this.setState({ adding: false, viewEmp: null, rosterView: null, addNew: false }); };
   goImportCrumb = () => this.setState({ viewEmp: null });
   clearEmpChanges = () => this.setState(s => ({ empForm: { ...(s.empBaseForm || emptyEmpForm()) }, empDirty: false, empTypeOpen: false, empPositionOpen: false, empRoleOpen: false, empDeptOpen: false, empDeptAdding: false, empRoleAdding: false }));
   empCancel = () => { if (this.state.addNew) { this.setState({ addNew: false }); return; } if (this.state.rosterView != null) this.setState({ rosterView: null }); else this.setState({ viewEmp: null }); };
@@ -2702,6 +2704,7 @@ class Component extends DCLogic {
       goImportCrumb: this.goImportCrumb,
       headerBack: this.headerBack,
       peopleCrumbCursor: inFlow ? 'pointer' : 'default',
+      peopleCrumbLabel: this._returnClient ? (((window.AppState && window.AppState.getActiveClient && window.AppState.getActiveClient()) || {}).name || 'Client') : 'People',
       importCrumbColor: empPreview ? 'var(--fg-secondary)' : 'var(--brand-700)',
       importCrumbCursor: empPreview ? 'pointer' : 'default',
       foundCount: (s.importRows || []).length,
