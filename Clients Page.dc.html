@@ -18,7 +18,7 @@
   *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
 </style>
 </helmet>
-<div style="display:flex;height:100vh;overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
+<div style="display:flex;height:calc(100vh / var(--dxp-zoom, 1));overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
 
   <dc-import name="Sidebar" active="clients" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
 

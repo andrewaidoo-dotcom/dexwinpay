@@ -84,7 +84,7 @@
 
   <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
-      <div onClick="{{ stop }}" style="width:100%;max-width:760px;max-height:88vh;background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:760px;max-height:calc(88vh / var(--dxp-zoom, 1));background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;">
 
         <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 28px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
           <div style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
@@ -335,7 +335,7 @@ class Component extends DCLogic {
       notEmbedded: !embedded,
       rootStyle: embedded
         ? 'display:flex;flex-direction:column;background:transparent;font-family:var(--font-body);color:var(--fg-primary);'
-        : 'min-height:100vh;display:flex;flex-direction:column;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);',
+        : 'min-height:calc(100vh / var(--dxp-zoom, 1));display:flex;flex-direction:column;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);',
       mainPad: embedded ? '0' : '72px 24px 48px',
       modalOpen: this.state.modalOpen,
       isOwnerView: isOwnerEdit,

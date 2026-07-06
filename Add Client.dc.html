@@ -19,7 +19,7 @@
   @keyframes dxSpin { to { transform: rotate(360deg); } }
 </style>
 </helmet>
-<div style="display:flex;height:100vh;overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
+<div style="display:flex;height:calc(100vh / var(--dxp-zoom, 1));overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
 
   <dc-import name="Sidebar" active="clients" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
 
@@ -309,7 +309,7 @@
 
   <sc-if value="{{ loanOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeLoan }}" style="position:fixed;inset:0;z-index:100;background:var(--bg-overlay);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;padding:24px;">
-      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:calc(90vh / var(--dxp-zoom, 1));display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
         <div style="flex-shrink:0;display:flex;align-items:flex-start;gap:14px;padding:24px 24px 18px;border-bottom:1px solid var(--border-secondary);">
           <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--warning-50);color:var(--warning-700);">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
@@ -373,7 +373,7 @@
 
   <sc-if value="{{ paOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closePa }}" style="position:fixed;inset:0;z-index:100;background:var(--bg-overlay);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;padding:24px;">
-      <div onClick="{{ stop }}" style="width:100%;max-width:660px;max-height:90vh;display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:660px;max-height:calc(90vh / var(--dxp-zoom, 1));display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
         <div style="flex-shrink:0;display:flex;align-items:flex-start;gap:14px;padding:24px 24px 18px;border-bottom:1px solid var(--border-secondary);">
           <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:#EFF8FF;color:#2E90FA;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
@@ -520,7 +520,7 @@
 
   <sc-if value="{{ pdOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closePd }}" style="position:fixed;inset:0;z-index:100;background:var(--bg-overlay);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;padding:24px;">
-      <div onClick="{{ stop }}" style="width:100%;max-width:620px;max-height:90vh;display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:620px;max-height:calc(90vh / var(--dxp-zoom, 1));display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
         <div style="flex-shrink:0;display:flex;align-items:flex-start;gap:14px;padding:24px 24px 18px;border-bottom:1px solid var(--border-secondary);">
           <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--gray-100);color:var(--fg-secondary);">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path></svg>
@@ -616,7 +616,7 @@
 
   <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeEmpModal }}" style="position:fixed;inset:0;z-index:100;background:var(--bg-overlay);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;padding:24px;">
-      <div onClick="{{ stop }}" style="width:100%;max-width:640px;max-height:88vh;display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:640px;max-height:calc(88vh / var(--dxp-zoom, 1));display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
         <div style="flex-shrink:0;display:flex;align-items:flex-start;gap:14px;padding:24px 24px 18px;border-bottom:1px solid var(--border-secondary);">
           <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--brand-50);color:var(--brand-700);">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
@@ -667,7 +667,7 @@
 
   <sc-if value="{{ importOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeImport }}" style="position:fixed;inset:0;z-index:100;background:var(--bg-overlay);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;padding:24px;">
-      <div onClick="{{ stop }}" style="width:100%;max-width:660px;max-height:90vh;display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:660px;max-height:calc(90vh / var(--dxp-zoom, 1));display:flex;flex-direction:column;background:#fff;border-radius:var(--radius-2xl);box-shadow:var(--shadow-2xl);overflow:hidden;">
         <div style="flex-shrink:0;display:flex;align-items:flex-start;gap:14px;padding:24px 24px 18px;border-bottom:1px solid var(--border-secondary);">
           <img src="assets/file-type-xls.svg" alt="" width="44" height="44" style="flex-shrink:0;display:block;">
           <div style="flex:1;min-width:0;">

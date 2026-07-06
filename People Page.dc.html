@@ -26,7 +26,7 @@
   @keyframes addTypeIn { from { opacity: 0; transform: translateY(-6px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
 </style>
 </helmet>
-<div style="display:flex;height:100vh;overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
+<div style="display:flex;height:calc(100vh / var(--dxp-zoom, 1));overflow:hidden;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
 
   <dc-import name="Sidebar" active="people" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
 
@@ -973,7 +973,7 @@
 
   <sc-if value="{{ payAdd.editing }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ payAdd.cancel }}" style="position:fixed;inset:0;z-index:125;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
-      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:90vh;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:calc(90vh / var(--dxp-zoom, 1));background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
           <div style="min-width:0;">
             <h3 style="font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a pay addition</h3>
@@ -1084,7 +1084,7 @@
 
   <sc-if value="{{ payDed.editing }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ payDed.cancel }}" style="position:fixed;inset:0;z-index:125;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
-      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:90vh;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:calc(90vh / var(--dxp-zoom, 1));background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
           <div style="min-width:0;">
             <h3 style="font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a pay deduction</h3>
@@ -1144,7 +1144,7 @@
 
   <sc-if value="{{ payLoan.editing }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ payLoan.cancel }}" style="position:fixed;inset:0;z-index:125;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
-      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:90vh;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:calc(90vh / var(--dxp-zoom, 1));background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
           <div style="min-width:0;">
             <h3 style="font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a loan or advance</h3>
@@ -1201,7 +1201,7 @@
 
   <sc-if value="{{ empTypeHelpOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeEmpTypeHelp }}" style="position:fixed;inset:0;z-index:120;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
-      <div onClick="{{ stop }}" style="width:100%;max-width:720px;max-height:86vh;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:720px;max-height:calc(86vh / var(--dxp-zoom, 1));background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
           <div style="min-width:0;">
             <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.01em;margin:0 0 4px;color:var(--fg-primary);">Choosing an employment type</h2>
@@ -1324,7 +1324,7 @@
 
   <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;z-index:60;background:rgba(10,13,18,0.5);backdrop-filter:blur(2px);display:flex;justify-content:flex-end;">
-      <div onClick="{{ stop }}" style="width:880px;max-width:94vw;height:100vh;background:var(--bg-primary);box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;animation:slideInRight 240ms ease;">
+      <div onClick="{{ stop }}" style="width:880px;max-width:calc(94vw / var(--dxp-zoom, 1));height:calc(100vh / var(--dxp-zoom, 1));background:var(--bg-primary);box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;animation:slideInRight 240ms ease;">
 
         <div style="display:flex;align-items:center;gap:16px;padding:24px 32px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
           <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ true }}">

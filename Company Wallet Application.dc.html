@@ -23,7 +23,7 @@
   @keyframes pulseRing { 0% { box-shadow: 0 0 0 0 rgba(2,170,105,0.35); } 70% { box-shadow: 0 0 0 14px rgba(2,170,105,0); } 100% { box-shadow: 0 0 0 0 rgba(2,170,105,0); } }
 </style>
 </helmet>
-<div style="min-height:var(--dxp-app-minh, 100vh);flex:1 1 auto;display:flex;flex-direction:column;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+<div style="min-height:var(--dxp-app-minh, calc(100vh / var(--dxp-zoom, 1)));flex:1 1 auto;display:flex;flex-direction:column;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
 
   <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
   <header style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 32px;background:var(--bg-primary);border-bottom:1px solid var(--border-secondary);flex-shrink:0;">

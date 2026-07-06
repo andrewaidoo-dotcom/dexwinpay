@@ -25,7 +25,7 @@
   @keyframes drawerIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
 </style>
 </helmet>
-<div style="display:flex;min-height:100vh;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+<div style="display:flex;min-height:calc(100vh / var(--dxp-zoom, 1));background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
 
   <dc-import name="Sidebar" active="payroll" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
 
@@ -646,7 +646,7 @@
         <!-- PERMISSIONS MODAL -->
         <sc-if value="{{ permModalOpen }}" hint-placeholder-val="{{ false }}">
           <div onClick="{{ closePermModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
-            <div onClick="{{ stopProp }}" style="width:100%;max-width:620px;max-height:88vh;background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:visible;">
+            <div onClick="{{ stopProp }}" style="width:100%;max-width:620px;max-height:calc(88vh / var(--dxp-zoom, 1));background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:visible;">
               <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 28px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
                 <div style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
@@ -753,7 +753,7 @@
         <!-- LOAN / ADVANCE MODAL -->
         <sc-if value="{{ loanModalOpen }}" hint-placeholder-val="{{ false }}">
           <div onClick="{{ closeLoanModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
-            <div onClick="{{ stopProp }}" style="width:100%;max-width:560px;max-height:90vh;background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:visible;">
+            <div onClick="{{ stopProp }}" style="width:100%;max-width:560px;max-height:calc(90vh / var(--dxp-zoom, 1));background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:visible;">
               <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 28px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
                 <div style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
@@ -1687,7 +1687,7 @@
 <!-- BULK PAY ITEM MODAL -->
 <sc-if value="{{ bulkOpen }}" hint-placeholder-val="{{ false }}">
   <div onClick="{{ closeBulk }}" style="position:fixed;inset:0;z-index:130;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
-    <div onClick="{{ bulkStop }}" style="width:100%;max-width:560px;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 64px);">
+    <div onClick="{{ bulkStop }}" style="width:100%;max-width:560px;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);overflow:hidden;display:flex;flex-direction:column;max-height:calc(calc(100vh / var(--dxp-zoom, 1)) - 64px);">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 6px;flex-shrink:0;">
         <div style="min-width:0;">
           <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">{{ bulkTitle }}</h2>
@@ -1747,7 +1747,7 @@
 <!-- FILTER DRAWER -->
 <sc-if value="{{ filterOpen }}" hint-placeholder-val="{{ false }}">
   <div onClick="{{ closeFilter }}" style="position:fixed;inset:0;z-index:140;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);font-family:var(--font-body);">
-    <div onClick="{{ bulkStop }}" style="position:absolute;top:0;right:0;bottom:0;width:392px;max-width:calc(100vw - 32px);background:#fff;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;animation:drawerIn 260ms cubic-bezier(0.16,1,0.3,1);">
+    <div onClick="{{ bulkStop }}" style="position:absolute;top:0;right:0;bottom:0;width:392px;max-width:calc(calc(100vw / var(--dxp-zoom, 1)) - 32px);background:#fff;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;animation:drawerIn 260ms cubic-bezier(0.16,1,0.3,1);">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
         <div style="min-width:0;">
           <h2 style="font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.02em;margin:0 0 3px;">Filter employees</h2>
