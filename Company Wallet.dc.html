@@ -21,15 +21,24 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </helmet>
-<div style="display:flex;min-height:100vh;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+<div style="display:flex;height:100vh;overflow:hidden;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
 
   <dc-import name="Sidebar" active="wallets" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
 
   <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
     <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:20;">
       <div style="min-width:0;">
-        <div style="font-family:var(--font-display);font-size:20px;line-height:25px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);">{{ walletTitle }}</div>
-        <div style="font-size:13px;line-height:17px;color:var(--fg-tertiary);">{{ walletSub }}</div>
+        <sc-if value="{{ isApplying }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-body);font-size:15px;font-weight:600;">
+            <span role="button" onClick="{{ saveExitHeader }}" style="color:var(--fg-tertiary);cursor:pointer;transition:color 120ms ease;" style-hover="color:var(--fg-secondary);">{{ walletTitle }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span style="color:var(--brand-700);">{{ applyHeading }}</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notApplying }}" hint-placeholder-val="{{ true }}">
+          <div style="font-family:var(--font-display);font-size:20px;line-height:25px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);">{{ walletTitle }}</div>
+          <div style="font-size:13px;line-height:17px;color:var(--fg-tertiary);">{{ walletSub }}</div>
+        </sc-if>
       </div>
       <div style="display:flex;align-items:center;gap:20px;">
         <div style="display:flex;align-items:center;gap:9px;color:var(--fg-secondary);font-size:15px;font-weight:500;">
@@ -42,26 +51,57 @@
       </div>
     </header>
 
+    <sc-if value="{{ isApplying }}" hint-placeholder-val="{{ false }}">
+      <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 40px;background:#fff;border-bottom:1px solid var(--border-secondary);">
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:24px;line-height:32px;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ applyHeading }}</h2>
+        <button onClick="{{ saveExitHeader }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          Save &amp; exit
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        </button>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;--dxp-app-minh:0px;--dxp-app-pad:36px 40px 40px;">
+        <dc-import name="Company Wallet Application" embedded="{{ true }}" hide-embed-bar="{{ true }}" bind-save-exit="{{ bindSaveExit }}" on-exit="{{ exitApplication }}" hint-size="100%,640px" style="flex:1 0 auto;display:flex;flex-direction:column;"></dc-import>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ notApplying }}" hint-placeholder-val="{{ true }}">
     <div style="flex: 1; overflow-y: auto; padding: 32px 40px 56px; display: flex; align-items: center">
       <div style="max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; align-items: center">
 
         <!-- STATE 1 — NO APPLICATION -->
         <sc-if value="{{ isNoApp }}" hint-placeholder-val="{{ true }}">
+          <sc-if value="{{ noProgress }}" hint-placeholder-val="{{ true }}">
           <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 64px 24px 56px; background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: 20px; box-shadow: var(--shadow-xs); max-width: 520px">
             <span style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:999px;border:1px solid var(--border-secondary);color:var(--brand-600);background:var(--brand-50);margin-bottom:22px;">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg>
             </span>
             <h3 style="font-family:var(--font-display);font-size:26px;line-height:32px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;color:var(--fg-primary);">No wallet yet</h3>
             <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 28px;max-width:48ch;text-wrap:pretty;">Apply for a company wallet to pay salaries directly from DexwinPay. We’ll verify your business (KYB) first — it usually takes 1–2 working days.</p>
-            <a href="Company Wallet Application.dc.html" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+            <button onClick="{{ startApplication }}" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-btn-primary);transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
               Start Application
-            </a>
+            </button>
           </div>
           <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;color:var(--fg-tertiary);font-size:14px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
             You’ll need your business registration, TIN and a director’s ID to complete KYB.
           </div>
+          </sc-if>
+
+          <sc-if value="{{ hasProgress }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 64px 24px 48px; background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: 20px; box-shadow: var(--shadow-xs); max-width: 520px">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:999px;border:1px solid var(--border-secondary);color:var(--brand-600);background:var(--brand-50);margin-bottom:22px;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg>
+            </span>
+            <h3 style="font-family:var(--font-display);font-size:26px;line-height:32px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;color:var(--fg-primary);">Finish your application</h3>
+            <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 28px;max-width:44ch;text-wrap:pretty;">Your progress is saved — you stopped at <strong style="color:var(--fg-secondary);font-weight:700;">{{ progressStage }}</strong>. Pick up right where you left off.</p>
+            <button onClick="{{ startApplication }}" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-btn-primary);transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+              Continue application
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+            <button onClick="{{ startOver }}" style="margin-top:14px;padding:6px 10px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--fg-tertiary);background:transparent;border:none;border-radius:var(--radius-full);cursor:pointer;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Start over instead</button>
+          </div>
+          </sc-if>
         </sc-if>
 
         <!-- STATE 2 — UNDER REVIEW -->
@@ -194,6 +234,7 @@
 
       </div>
     </div>
+    </sc-if>
   </div>
 
 </div>
@@ -215,7 +256,23 @@ const ACTIVITY = [
 ];
 
 class Component extends DCLogic {
-  state = { walletState: 'No application', panelOpen: false, acctCompany: '', allocDrafts: {} };
+  state = { walletState: 'No application', panelOpen: false, acctCompany: '', allocDrafts: {}, applying: false, progress: null };
+
+  readProgress = () => {
+    let p = null;
+    try { p = JSON.parse(localStorage.getItem('dxp_wallet_app_progress')); } catch (e) {}
+    this.setState({ progress: p && p.screen ? p : null });
+  };
+  startApplication = () => this.setState({ applying: true });
+  startOver = () => {
+    try { localStorage.removeItem('dxp_wallet_app_progress'); } catch (e) {}
+    this.setState({ progress: null, applying: true });
+  };
+  exitApplication = () => {
+    this.setState({ applying: false });
+    this.readProgress();
+    this.applyState();
+  };
 
   setAlloc = (id) => () => {
     const A = window.AppState;
@@ -233,6 +290,7 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.applyState();
+    this.readProgress();
     const loadAcct = () => {
       if (!window.AppState || !window.AppState.getAccount) return false;
       this.setState({ acctCompany: window.AppState.getAccount().company || '' });
@@ -260,6 +318,9 @@ class Component extends DCLogic {
     } catch (e) {}
     this.setState({ walletState: s });
   }
+
+  bindSaveExit = (fn) => { this._appSaveExit = fn; };
+  saveExitHeader = () => { if (this._appSaveExit) this._appSaveExit(); else this.exitApplication(); };
 
   onAddFunds = () => {};
   onWithdraw = () => {};
@@ -311,6 +372,12 @@ class Component extends DCLogic {
       accountName: this.state.acctCompany || 'Your company',
       today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       isNoApp: s === 'No application',
+      isApplying: this.state.applying, notApplying: !this.state.applying,
+      noProgress: !this.state.progress, hasProgress: !!this.state.progress,
+      progressStage: (this.state.progress && this.state.progress.stageName) || 'Getting started',
+      startApplication: this.startApplication, startOver: this.startOver, exitApplication: this.exitApplication,
+      applyHeading: agency ? 'Apply for agency wallet' : 'Apply for company wallet',
+      bindSaveExit: this.bindSaveExit, saveExitHeader: this.saveExitHeader,
       isReview: s === 'Under review',
       isApproved,
       panelGroups, panelOpen: this.state.panelOpen, panelClosed: !this.state.panelOpen, togglePanel: this.togglePanel,

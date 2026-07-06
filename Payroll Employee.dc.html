@@ -40,7 +40,7 @@
         <sc-if value="{{ inClientCtx }}" hint-placeholder-val="{{ true }}">
           <a href="Clients Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Clients</a>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          <a href="Client Instace.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ bcClientName }}</a>
+          <a href="Client Instance.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ bcClientName }}</a>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
           <span style="color:var(--brand-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ name }}</span>
         </sc-if>
@@ -570,7 +570,7 @@ class Component extends DCLogic {
     this.persist(items); return { items };
   });
 
-  goBackStep = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); const cl = window.AppState && window.AppState.getActiveClient && window.AppState.getActiveClient(); const ag = window.AppState && window.AppState.isAgency && window.AppState.isAgency(); if (ag && cl) { window.location.href = 'Client Instace.dc.html'; } else if (window.history.length > 1) { window.history.back(); } else { window.location.href = 'Payroll Page.dc.html'; } };
+  goBackStep = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); const cl = window.AppState && window.AppState.getActiveClient && window.AppState.getActiveClient(); const ag = window.AppState && window.AppState.isAgency && window.AppState.isAgency(); if (ag && cl) { window.location.href = 'Client Instance.dc.html'; } else if (window.history.length > 1) { window.history.back(); } else { window.location.href = 'Payroll Page.dc.html'; } };
 
   renderVals() {
     const s = this.state;

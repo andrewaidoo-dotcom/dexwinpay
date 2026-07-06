@@ -1812,7 +1812,7 @@ class Component extends DCLogic {
   // (People › Import your employees › Name). Only a top-level step leaves the flow.
   headerBack = () => {
     const s = this.state;
-    if (this._returnClient) { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} window.location.href = 'Client Instace.dc.html'; return; }
+    if (this._returnClient) { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} window.location.href = 'Client Instance.dc.html'; return; }
     if (s.viewEmp != null) { this.setState({ viewEmp: null, empErrs: {} }); return; }   // employee → import list
     if (s.adding && !s.addNew && !s.rosterView && s.addingStep === 'upload') { this.setState({ addingStep: 'choose' }); return; } // upload → choose method
     this.requestExit();   // top level (import list / add-one / roster edit) → People, with unsaved-changes guard
@@ -1820,7 +1820,7 @@ class Component extends DCLogic {
   cancelExit = () => this.setState({ exitConfirm: false });
   confirmExit = () => this.flowExit();
   closeAdding = () => this.flowExit();
-  goPeopleCrumb = () => { if (this._returnClient) { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} window.location.href = 'Client Instace.dc.html'; return; } this.setState({ adding: false, viewEmp: null, rosterView: null, addNew: false }); };
+  goPeopleCrumb = () => { if (this._returnClient) { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} window.location.href = 'Client Instance.dc.html'; return; } this.setState({ adding: false, viewEmp: null, rosterView: null, addNew: false }); };
   goImportCrumb = () => this.setState({ viewEmp: null });
   clearEmpChanges = () => this.setState(s => ({ empForm: { ...(s.empBaseForm || emptyEmpForm()) }, empDirty: false, empTypeOpen: false, empPositionOpen: false, empRoleOpen: false, empDeptOpen: false, empDeptAdding: false, empRoleAdding: false }));
   empCancel = () => { if (this.state.addNew) { this.setState({ addNew: false }); return; } if (this.state.rosterView != null) this.setState({ rosterView: null }); else this.setState({ viewEmp: null }); };

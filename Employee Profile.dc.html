@@ -32,7 +32,7 @@
         <sc-if value="{{ inClientCtx }}" hint-placeholder-val="{{ true }}">
           <a href="Clients Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Clients</a>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
-          <a href="Client Instace.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ bcClientName }}</a>
+          <a href="Client Instance.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ bcClientName }}</a>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
           <span style="color:var(--brand-700);">{{ headerName }}</span>
         </sc-if>
@@ -616,7 +616,7 @@ class Component extends DCLogic {
       editing,
       headerName: name,
       inClientCtx, notClientCtx, bcClientName,
-      empBackHref: inClientCtx ? 'Client Instace.dc.html' : 'People Page.dc.html',
+      empBackHref: inClientCtx ? 'Client Instance.dc.html' : 'People Page.dc.html',
       empBackLabel: inClientCtx ? 'Back to employees' : 'Back to people',
       backToList: () => { try { localStorage.setItem('dxp_payroll_tab', 'employees'); } catch (e) {} },
       name,

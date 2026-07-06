@@ -23,7 +23,7 @@
   @keyframes pulseRing { 0% { box-shadow: 0 0 0 0 rgba(2,170,105,0.35); } 70% { box-shadow: 0 0 0 14px rgba(2,170,105,0); } 100% { box-shadow: 0 0 0 0 rgba(2,170,105,0); } }
 </style>
 </helmet>
-<div style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+<div style="min-height:var(--dxp-app-minh, 100vh);flex:1 1 auto;display:flex;flex-direction:column;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
 
   <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
   <header style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 32px;background:var(--bg-primary);border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
@@ -32,13 +32,20 @@
       <span style="font-family:var(--font-display);font-weight:900;font-size:10px;letter-spacing:0.04em;color:var(--fg-primary);">PAY</span>
     </span>
     <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-display);font-size:18px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);white-space:nowrap;">Company wallet application</span>
-    <a href="Company Wallet.dc.html" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;font-weight:700;font-size:14px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+    <a href="Company Wallet.dc.html" onClick="{{ saveExitStandalone }}" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;font-weight:700;font-size:14px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
       Save &amp; Exit
     </a>
   </header>
   </sc-if>
 
-  <main style="flex:1;overflow-y:auto;padding:48px 32px 40px;box-sizing:border-box;">
+  <main ref="{{ mainRef }}" style="flex:1;overflow-y:auto;padding:var(--dxp-app-pad, 48px 32px 40px);box-sizing:border-box;">
+
+    <sc-if value="{{ showEmbedBar }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:{{ footMaxWidth }};margin:0 auto 26px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <span style="font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);">Wallet application</span>
+        <button onClick="{{ saveExit }}" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Save &amp; exit</button>
+      </div>
+    </sc-if>
 
     <sc-if value="{{ showStepper }}" hint-placeholder-val="{{ false }}">
       <div style="max-width:{{ footMaxWidth }};margin:0 auto 28px;">
@@ -834,10 +841,18 @@
             Verification pending &middot; 1&ndash;2 business days
           </span>
         </div>
+        <sc-if value="{{ notEmbedded }}" hint-placeholder-val="{{ true }}">
         <a href="Dashboard Page.dc.html" onClick="{{ setWalletReview }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
           Back to dashboard
         </a>
+        </sc-if>
+        <sc-if value="{{ isEmbedded }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ exitAfterSubmit }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+          Back to wallet
+        </button>
+        </sc-if>
       </div>
     </sc-if>
 
@@ -865,7 +880,12 @@
             <sc-if value="{{ termShowReapply }}" hint-placeholder-val="{{ false }}">
               <button onClick="{{ reapply }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Reapply with corrections</button>
             </sc-if>
+            <sc-if value="{{ notEmbedded }}" hint-placeholder-val="{{ true }}">
             <a href="Dashboard Page.dc.html" onClick="{{ termDashClick }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ termDashColor }};background:{{ termDashBg }};border:1px solid {{ termDashBorder }};border-radius:var(--radius-full);box-shadow:{{ termDashShadow }};text-decoration:none;transition:background 120ms ease;">{{ termDashLabel }}</a>
+            </sc-if>
+            <sc-if value="{{ isEmbedded }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ termExitEmbedded }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ termDashColor }};background:{{ termDashBg }};border:1px solid {{ termDashBorder }};border-radius:var(--radius-full);box-shadow:{{ termDashShadow }};cursor:pointer;transition:background 120ms ease;">Back to wallet</button>
+            </sc-if>
           </div>
         </div>
       </div>
@@ -930,7 +950,9 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1024 },
-  &quot;view&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Apply flow&quot;, &quot;Submitted (pending)&quot;, &quot;Verified&quot;, &quot;Rejected&quot;], &quot;default&quot;: &quot;Apply flow&quot;, &quot;tsType&quot;: &quot;string&quot; }
+  &quot;view&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Apply flow&quot;, &quot;Submitted (pending)&quot;, &quot;Verified&quot;, &quot;Rejected&quot;], &quot;default&quot;: &quot;Apply flow&quot;, &quot;tsType&quot;: &quot;string&quot; },
+  &quot;embedded&quot;: { &quot;editor&quot;: null, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot; },
+  &quot;onExit&quot;: { &quot;editor&quot;: null, &quot;tsType&quot;: &quot;() =&gt; void&quot; }
 }">
 const FORM3 = {
   legalName: 'Northside Medical Centre Ltd',
@@ -1010,7 +1032,7 @@ class Component extends DCLogic {
   };
   readTimer = null;
 
-  componentDidMount() { this.applyView(); }
+  componentDidMount() { this.applyView(); this.restoreProgress(); if (this.props.bindSaveExit) this.props.bindSaveExit(this.saveExit); }
   componentDidUpdate(prevProps) { if (prevProps.view !== this.props.view) this.applyView(); }
   componentWillUnmount() { if (this.readTimer) clearTimeout(this.readTimer); }
 
@@ -1031,7 +1053,53 @@ class Component extends DCLogic {
   };
   togglePanel = () => this.setState(s => ({ panelOpen: !s.panelOpen }));
 
-  go = (screen) => { window.scrollTo(0, 0); this.setState({ screen }); };
+  // ---- Progress persistence ("continue where you left off") ----
+  PKEY = 'dxp_wallet_app_progress';
+  progressSnapshot() {
+    const s = this.state;
+    const stage = STAGE_OF[s.screen];
+    const stageNames = ['Business details', 'Documents', 'Stakeholders', 'Review', 'Submit'];
+    return {
+      screen: s.screen, path: s.path, biz: s.biz, docUploaded: s.docUploaded,
+      addIndividual: s.addIndividual, addCorporate: s.addCorporate,
+      individuals: s.individuals, corporates: s.corporates, inviteList: s.inviteList, invite: s.invite,
+      sh: s.sh, corp: s.corp, pendingResolved: s.pendingResolved,
+      stageName: stage !== undefined ? stageNames[stage] : 'Getting started', savedAt: Date.now(),
+    };
+  }
+  saveProgress() {
+    const sc = this.state.screen;
+    if (sc === 'reading') return; // transient
+    if (sc === 'intro' || sc === 'pending' || sc === 'verified' || sc === 'rejected') { this.clearProgress(); return; }
+    try { localStorage.setItem(this.PKEY, JSON.stringify(this.progressSnapshot())); } catch (e) {}
+  }
+  clearProgress() { try { localStorage.removeItem(this.PKEY); } catch (e) {} }
+  restoreProgress() {
+    const a = window.AppState && window.AppState.get();
+    if (a && a.wallet !== 'none') return;
+    let p = null;
+    try { p = JSON.parse(localStorage.getItem(this.PKEY)); } catch (e) {}
+    if (!p || !p.screen) return;
+    this.setState({
+      screen: p.screen, path: p.path || 'upload', biz: p.biz || this.state.biz,
+      docUploaded: !!p.docUploaded, addIndividual: p.addIndividual !== false, addCorporate: !!p.addCorporate,
+      individuals: p.individuals || [], corporates: p.corporates || [], inviteList: p.inviteList || [],
+      invite: p.invite || { name: '', contact: '' }, sh: p.sh || emptyStakeholder(), corp: p.corp || emptyCorp(),
+      pendingResolved: !!p.pendingResolved,
+    });
+  }
+  saveExit = () => { this.saveProgress(); if (this.props.onExit) this.props.onExit(); };
+  saveExitStandalone = () => { this.saveProgress(); };
+  exitAfterSubmit = () => { if (this.props.onExit) this.props.onExit(); };
+  termExitEmbedded = () => { if (this.props.onExit) this.props.onExit(); };
+  mainRef = (el) => { this._main = el; };
+
+  go = (screen) => {
+    window.scrollTo(0, 0);
+    let el = this._main;
+    while (el) { if (el.scrollTop) el.scrollTop = 0; el = el.parentElement; }
+    this.setState({ screen }, () => this.saveProgress());
+  };
   stop = (e) => e.stopPropagation();
 
   // intro
@@ -1162,6 +1230,8 @@ class Component extends DCLogic {
   submit = () => {
     if (this.hasPendingInvites()) return;
     try { localStorage.setItem('dexwinpay_walletState', 'In review'); } catch (e) {}
+    if (window.AppState) window.AppState.set({ wallet: 'review' });
+    this.clearProgress();
     this.go('pending');
   };
   reapply = () => { this.setState({ pendingResolved: false }); this.go('biz1'); };
@@ -1186,7 +1256,7 @@ class Component extends DCLogic {
   };
   back = () => {
     const s = this.state.screen;
-    if (s === 'intro') { window.location.href = 'Company Wallet.dc.html'; return; }
+    if (s === 'intro') { if (this.props.embedded) this.saveExit(); else window.location.href = 'Company Wallet.dc.html'; return; }
     if (s === 'upload') this.go('intro');
     else if (s === 'reading') this.go('upload');
     else if (s === 'extracted') this.go('upload');
@@ -1332,7 +1402,8 @@ class Component extends DCLogic {
       };
     }
 
-    const showChrome = !isTerminal;
+    const embedded = !!this.props.embedded;
+    const showChrome = !isTerminal && !embedded;
     const showStepper = STAGE_OF[screen] !== undefined && !isTerminal;
     const viewCur = s.ovView || this.props.view || 'Apply flow';
     const mkOpt = (value, label) => ({ label, onClick: () => this.setView(value),
@@ -1344,6 +1415,10 @@ class Component extends DCLogic {
     ];
     return {
       showChrome, showStepper, stageName, stepLabel, progressPct,
+      isEmbedded: embedded, notEmbedded: !embedded,
+      showEmbedBar: embedded && !this.props.hideEmbedBar && !isTerminal && screen !== 'pending',
+      saveExit: this.saveExit, saveExitStandalone: this.saveExitStandalone,
+      exitAfterSubmit: this.exitAfterSubmit, termExitEmbedded: this.termExitEmbedded, mainRef: this.mainRef,
       panelGroups, panelOpen: s.panelOpen, panelClosed: !s.panelOpen, togglePanel: this.togglePanel,
       isIntro: screen === 'intro', isUpload: screen === 'upload', isReading: screen === 'reading',
       isExtracted: screen === 'extracted', isManual: screen === 'manual',
