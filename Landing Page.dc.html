@@ -10,6 +10,7 @@
 <helmet>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <script src="./ds-base.js"></script>
+  <script src="./app-state.js"></script>
 </helmet>
 <div style="background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
 
@@ -258,7 +259,62 @@
     </div>
   </footer>
 
+  <!-- Demo shortcut: skip landing + account creation -->
+  <div style="position:fixed;bottom:24px;right:24px;z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+    <sc-if value="{{ skipOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#ffffff;border:1px solid var(--border-secondary);border-radius:var(--radius-2xl);box-shadow:var(--shadow-lg);padding:18px;width:280px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="font-weight:700;font-size:15px;color:var(--fg-primary);">Skip straight to the dashboard</div>
+          <div style="font-size:13px;line-height:19px;color:var(--fg-tertiary);">Clears existing data and creates the account for you with made-up details.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button onClick="{{ skipCompany }}" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-body);font-weight:600;font-size:15px;line-height:22px;padding:10px 18px;border-radius:var(--radius-full);background:var(--brand-600);color:#ffffff;border:1px solid var(--brand-600);box-shadow:var(--shadow-btn-primary);cursor:pointer;" style-hover="background:var(--brand-700);" style-active="transform:translateY(1px);">My own company</button>
+          <button onClick="{{ skipAgency }}" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-body);font-weight:600;font-size:15px;line-height:22px;padding:10px 18px;border-radius:var(--radius-full);background:var(--brand-900,#013a25);color:#ffffff;border:1px solid var(--brand-900,#013a25);cursor:pointer;" style-hover="opacity:0.92;" style-active="transform:translateY(1px);">Payroll agency</button>
+        </div>
+      </div>
+    </sc-if>
+    <button onClick="{{ toggleSkip }}" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-body);font-weight:600;font-size:14px;line-height:20px;padding:10px 18px;border-radius:var(--radius-full);background:#ffffff;color:var(--fg-secondary);border:1px solid var(--border-primary);box-shadow:var(--shadow-md);cursor:pointer;" style-hover="background:var(--gray-50);color:var(--fg-primary);">{{ skipLabel }}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg></button>
+  </div>
+
 </div>
 </x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { skipOpen: false };
+
+  _skipAs(type) {
+    // Wipe all existing app data (user requested a clean start).
+    try {
+      var doomed = [];
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('dxp_') === 0) doomed.push(k);
+      }
+      doomed.forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) {}
+
+    var A = window.AppState;
+    if (A) {
+      A.setAccountType(type);
+      A.setAccount(type === 'agency'
+        ? { firstName: 'Ama', lastName: 'Mensah', company: 'Mensah & Associates', email: 'ama@mensahassociates.com.gh', dial: '+233', phone: '24 555 0192', estimate: '12' }
+        : { firstName: 'Kwame', lastName: 'Owusu', company: 'Adinkra Foods Ltd', email: 'kwame@adinkrafoods.com.gh', dial: '+233', phone: '20 555 0147', estimate: '25' });
+      A.set({ employees: 'todo', payroll: 'locked', wallet: 'none' });
+      A.signIn();
+    }
+    location.href = 'Dashboard Page.dc.html';
+  }
+
+  renderVals() {
+    return {
+      skipOpen: this.state.skipOpen,
+      skipLabel: this.state.skipOpen ? 'Close' : 'Skip to dashboard',
+      toggleSkip: () => this.setState(function (s) { return { skipOpen: !s.skipOpen }; }),
+      skipCompany: () => this._skipAs('company'),
+      skipAgency: () => this._skipAs('agency'),
+    };
+  }
+}
+</script>
 </body>
 </html>
