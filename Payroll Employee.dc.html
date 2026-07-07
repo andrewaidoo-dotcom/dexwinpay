@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/styles.css">
   <script src="./payroll-engine.js"></script>
   <script src="./app-state.js"></script>
+  <script src="./density.js"></script>
   <style>
     * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
     *::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -47,7 +48,7 @@
         <sc-if value="{{ notClientCtx }}" hint-placeholder-val="{{ false }}">
           <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Payroll</a>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ periodLabel }} payroll</a>
+          <a href="{{ payrollRunHref }}" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ periodLabel }} payroll</a>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
           <span style="color:var(--brand-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ name }}</span>
         </sc-if>
@@ -198,6 +199,7 @@
 
               <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:20px;">
                 <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">From company setup · included in basic pay</div>
+                <sc-if value="{{ hasCompanyAdds }}" hint-placeholder-val="{{ true }}">
                 <sc-for list="{{ companyAdditions }}" as="c" hint-placeholder-count="2">
                   <div style="display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid var(--border-tertiary);">
                     <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
@@ -205,6 +207,15 @@
                     <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px;"><span style="font-size:15px;font-weight:700;color:var(--success-700);font-variant-numeric:tabular-nums;">+ {{ c.amountText }}</span><span style="font-size:12px;font-weight:600;color:var(--fg-quaternary);">Company-wide</span></div>
                   </div>
                 </sc-for>
+                </sc-if>
+                <sc-if value="{{ noCompanyAdds }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:34px 28px;text-align:center;">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:var(--radius-full);background:var(--bg-secondary);color:var(--fg-tertiary);margin-bottom:14px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+                    <div style="font-size:15px;font-weight:700;color:var(--fg-primary);margin-bottom:4px;">No company allowances set up</div>
+                    <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);max-width:44ch;margin:0 auto 16px;">Allowances set up in payroll apply to every employee automatically and would appear here.</div>
+                    <a href="Payroll Page.dc.html" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Set up in payroll</a>
+                  </div>
+                </sc-if>
               </div>
 
               <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;">
@@ -240,6 +251,7 @@
 
               <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:20px;">
                 <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">From company setup</div>
+                <sc-if value="{{ hasCompanyDeds }}" hint-placeholder-val="{{ true }}">
                 <sc-for list="{{ companyDeductions }}" as="c" hint-placeholder-count="2">
                   <div style="display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid var(--border-tertiary);">
                     <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--gray-100);color:var(--fg-secondary);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
@@ -247,6 +259,15 @@
                     <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px;"><span style="font-size:15px;font-weight:700;color:var(--error-700);font-variant-numeric:tabular-nums;">− {{ c.amountText }}</span><span style="font-size:12px;font-weight:600;color:var(--fg-quaternary);">Company-wide</span></div>
                   </div>
                 </sc-for>
+                </sc-if>
+                <sc-if value="{{ noCompanyDeds }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:34px 28px;text-align:center;">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:var(--radius-full);background:var(--bg-secondary);color:var(--fg-tertiary);margin-bottom:14px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+                    <div style="font-size:15px;font-weight:700;color:var(--fg-primary);margin-bottom:4px;">No company deductions set up</div>
+                    <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);max-width:44ch;margin:0 auto 16px;">Deductions set up in payroll apply to every employee automatically and would appear here.</div>
+                    <a href="Payroll Page.dc.html" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Set up in payroll</a>
+                  </div>
+                </sc-if>
               </div>
 
               <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;">
@@ -356,6 +377,35 @@
                     <div style="font-size:14.5px;line-height:21px;color:var(--fg-tertiary);max-width:42ch;margin:0 auto;">{{ firstName }} can't be paid until their bank info is added. Add it from the payroll run when prompted.</div>
                   </div>
                 </sc-if>
+              </div>
+            </sc-if>
+
+            <!-- EMPLOYEE DETAILS -->
+            <sc-if value="{{ isDetails }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px;">
+                <div>
+                  <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Employee details</h2>
+                  <p style="font-size:14.5px;line-height:21px;color:var(--fg-tertiary);margin:0;max-width:54ch;">What's on file for {{ firstName }}, as collected on their profile.</p>
+                </div>
+                <a href="{{ profileHref }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:11px 18px;font-family:var(--font-body);font-weight:700;font-size:14.5px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  Open full profile
+                </a>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <sc-for list="{{ detailSections }}" as="sec" hint-placeholder-count="3">
+                  <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;">
+                    <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">{{ sec.title }}</div>
+                    <div style="padding:2px 22px 8px;">
+                      <sc-for list="{{ sec.rows }}" as="r" hint-placeholder-count="4">
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--border-tertiary);">
+                          <span style="font-size:14.5px;color:var(--fg-tertiary);white-space:nowrap;">{{ r.label }}</span>
+                          <span style="font-size:15px;font-weight:700;color:{{ r.color }};font-variant-numeric:tabular-nums;text-align:right;min-width:0;overflow-wrap:break-word;">{{ r.value }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
               </div>
             </sc-if>
 
@@ -479,6 +529,7 @@ const MENU = [
   { id: 'deductions', label: 'Deductions', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="12" x2="16" y2="12"/></svg>' },
   { id: 'loans', label: 'Loans & advances', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>' },
   { id: 'bank', label: 'Bank details', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 21 7 3 7"/><line x1="5" y1="11" x2="5" y2="17"/><line x1="9.5" y1="11" x2="9.5" y2="17"/><line x1="14.5" y1="11" x2="14.5" y2="17"/><line x1="19" y1="11" x2="19" y2="17"/><line x1="3" y1="21" x2="21" y2="21"/></svg>' },
+  { id: 'details', label: 'Employee details', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' },
 ];
 
 class Component extends DCLogic {
@@ -581,7 +632,7 @@ class Component extends DCLogic {
     const inClientCtx = !!(_agency && _cl);
     const bcClientName = _cl ? _cl.name : 'Client';
     if (s.loaded && !emp) {
-      return { notFound: true, found: false, goBackStep: this.goBackStep, periodLabel, inClientCtx, notClientCtx: !inClientCtx, bcClientName, name: '', today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) };
+      return { notFound: true, found: false, goBackStep: this.goBackStep, periodLabel, inClientCtx, notClientCtx: !inClientCtx, bcClientName, name: '', payrollRunHref: s.periodId ? ('Payroll Page.dc.html?period=' + encodeURIComponent(s.periodId)) : 'Payroll Page.dc.html', today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) };
     }
     const e = emp || {};
     const firstName = (e.name || '').split(' ')[0];
@@ -657,6 +708,29 @@ class Component extends DCLogic {
     const addKindObj = ADD_KINDS.find(k => k.value === s.addKind) || ADD_KINDS[0];
     const dedModes = DED_MODES.map(t => { const on = s.dedMode === t.value; const rc = on ? SEL : IDLE; return { label: t.label, sub: t.sub, on, b: rc.b, bg: rc.bg, db: rc.db, dbg: rc.dbg, onSelect: this.pickDedMode(t.value) }; });
 
+    // ---- Employee details tab (full on-file record) ----
+    const _fullRec = ((window.AppState && window.AppState.getEmployeeById) ? window.AppState.getEmployeeById(s.empId) : null) || {};
+    const _rosterAll = (window.AppState && window.AppState.getEmployees) ? window.AppState.getEmployees() : [];
+    const _rosterIdx = _rosterAll.findIndex(x => x && x.id === s.empId);
+    const profileHref = _rosterIdx >= 0 ? ('Employee Profile.dc.html?i=' + _rosterIdx) : 'People Page.dc.html';
+    const payrollRunHref = s.periodId ? ('Payroll Page.dc.html?period=' + encodeURIComponent(s.periodId)) : 'Payroll Page.dc.html';
+    const DR = (label, v) => { const has = v != null && String(v).trim() !== ''; return { label, value: has ? String(v) : '\u2014', color: has ? 'var(--fg-primary)' : 'var(--fg-quaternary)' }; };
+    const _ssnitOn = (_fullRec.ssnitMember !== false) && (String(_fullRec.ssnit || '').toLowerCase() !== 'no');
+    const detailSections = [
+      { title: 'Personal', rows: [DR('Full name', _fullRec.name), DR('Other names', _fullRec.otherNames), DR('Date of birth', _fullRec.dob), DR('Ghana Card', _fullRec.ghanaCard)] },
+      { title: 'Employment', rows: [DR('Department', _fullRec.department), DR('Employment type', _fullRec.employmentType), DR('Position', _fullRec.position), DR('Job role', _fullRec.jobRole), DR('Staff number', _fullRec.staffNumber)] },
+      { title: 'Statutory & pension', rows: [
+        { label: 'SSNIT', value: _ssnitOn ? 'Enrolled' : 'Not enrolled', color: _ssnitOn ? 'var(--success-700)' : 'var(--fg-quaternary)' },
+        ...(_ssnitOn ? [DR('SSNIT number', _fullRec.ssnitNumber)] : []),
+        DR('Tier 3 contribution', _fullRec.tier3Amount ? _fullRec.tier3Amount + '%' : ''),
+        DR('TIN', _fullRec.tin),
+      ] },
+      { title: 'Contact', rows: [DR('Email', _fullRec.email), DR('Phone', _fullRec.phone), DR('Address', _fullRec.address)] },
+      { title: 'Beneficiary', rows: [DR('Name', _fullRec.beneficiaryName), DR('Contact', _fullRec.beneficiaryContact), DR('Relationship', _fullRec.beneficiaryRelationship)] },
+    ];
+    const _companyAdds = ((window.AppState && window.AppState.getCompanyAdditions) ? window.AppState.getCompanyAdditions() : []).filter(_caApplies).map(it => ({ name: it.name, tag: it.typeLabel || 'Cash Allowance', amountText: fmt(_caAmount(it, _basicN)) }));
+    const _companyDeds = ((window.AppState && window.AppState.getCompanyDeductions) ? window.AppState.getCompanyDeductions() : []).filter(_caApplies).map(it => ({ name: it.name, tag: it.taxMode === 'pretax' ? 'Pre-tax' : 'Post-tax', amountText: fmt(_caAmount(it, _basicN)) }));
+
     const statusChip = hasBank
       ? { label: 'Ready to pay', color: 'var(--success-700)', bg: 'var(--success-50)', border: 'var(--success-200)', dot: 'var(--success-500)' }
       : { label: 'Missing bank', color: 'var(--error-700)', bg: 'var(--error-50)', border: 'var(--error-200)', dot: 'var(--error-500)' };
@@ -672,7 +746,8 @@ class Component extends DCLogic {
 
       menuView,
       goBackStep: this.goBackStep,
-      isBreakdown: s.menu === 'breakdown', isAdditions: s.menu === 'additions', isDeductions: s.menu === 'deductions', isLoans: s.menu === 'loans', isBank: s.menu === 'bank',
+      isBreakdown: s.menu === 'breakdown', isAdditions: s.menu === 'additions', isDeductions: s.menu === 'deductions', isLoans: s.menu === 'loans', isBank: s.menu === 'bank', isDetails: s.menu === 'details',
+      detailSections, profileHref, payrollRunHref,
 
       // loans & advances tab
       loanRows, hasLoans, noLoans: !hasLoans,
@@ -685,12 +760,12 @@ class Component extends DCLogic {
       earningRows, deductionRows,
 
       // additions tab
-      companyAdditions: ((window.AppState && window.AppState.getCompanyAdditions) ? window.AppState.getCompanyAdditions() : []).filter(_caApplies).map(it => ({ name: it.name, tag: it.typeLabel || 'Cash Allowance', amountText: fmt(_caAmount(it, _basicN)) })),
+      companyAdditions: _companyAdds, hasCompanyAdds: _companyAdds.length > 0, noCompanyAdds: _companyAdds.length === 0,
       instanceAdditions: adds.map(a => ({ name: a.name, tag: a.tag, amount: fmt(a.amount), onRemove: this.removeAdd(a.id) })),
       hasAdditions: adds.length > 0, noAdditions: adds.length === 0,
 
       // deductions tab
-      companyDeductions: ((window.AppState && window.AppState.getCompanyDeductions) ? window.AppState.getCompanyDeductions() : []).filter(_caApplies).map(it => ({ name: it.name, tag: it.taxMode === 'pretax' ? 'Pre-tax' : 'Post-tax', amountText: fmt(_caAmount(it, _basicN)) })),
+      companyDeductions: _companyDeds, hasCompanyDeds: _companyDeds.length > 0, noCompanyDeds: _companyDeds.length === 0,
       instanceDeductions: deds.map(d => ({ name: d.name, tag: d.tag, amount: fmt(d.amount), onRemove: this.removeDed(d.id) })),
       hasDeductions: deds.length > 0, noDeductions: deds.length === 0,
 
@@ -699,7 +774,6 @@ class Component extends DCLogic {
       bankRows: [
         { label: 'Bank', value: e.bankName },
         { label: 'Branch', value: e.branch || '—' },
-        { label: 'Account name', value: e.name },
         { label: 'Account number', value: e.acct },
       ],
 

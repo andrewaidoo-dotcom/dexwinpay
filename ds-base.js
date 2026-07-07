@@ -16,14 +16,14 @@
     document.head.appendChild(fav);
   }
 
-  // Auto-density: the UI is designed for ~900px-tall viewports. On shorter
-  // screens (1366x768 laptops etc.) scale the whole page down proportionally
-  // so users keep the full working area instead of feeling "zoomed in".
-  const DESIGN_H = 900, MIN_ZOOM = 0.8;
+  // Auto-density: the UI is designed for wide desktop viewports. On narrower
+  // screens (1366x768 laptops etc.) scale the whole page down so users keep
+  // the full working area instead of feeling "zoomed in".
+  if (window.__dxpDensity) return;
+  window.__dxpDensity = true;
   const applyDensity = () => {
-    let z = Math.max(MIN_ZOOM, Math.min(1, window.innerHeight / DESIGN_H));
-    z = Math.round(z * 100) / 100;
-    if (z > 0.97) z = 1;
+    const w = window.innerWidth;
+    const z = w < 1160 ? 0.78 : (w < 1460 ? 0.85 : 1);
     const de = document.documentElement;
     de.style.zoom = z === 1 ? '' : String(z);
     // CSS zoom also scales vh/vw lengths; pages compensate via calc(Nvh / var(--dxp-zoom)).

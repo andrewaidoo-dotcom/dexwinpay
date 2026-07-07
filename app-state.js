@@ -58,7 +58,10 @@
     try { var id = localStorage.getItem(ACKEY) || ''; return getClientById(id) ? id : ''; } catch (e) { return ''; }
   }
   function setActiveClient(id) { try { if (id) localStorage.setItem(ACKEY, id); else localStorage.removeItem(ACKEY); } catch (e) {} }
-  function getActiveClient() { return getClientById(getActiveClientId()); }
+  // Drafts (abandoned add-client flows) are never the visible active client —
+  // only committed clients "exist". Raw id scoping (_scope) is untouched so the
+  // in-progress add-client flow still writes to the draft's scope.
+  function getActiveClient() { var c = getClientById(getActiveClientId()); return (c && c.draft) ? null : c; }
 
   // Storage-key scope: '' for company accounts, '@<clientId>' for the active client.
   function _scope() { var id = getActiveClientId(); return id ? '@' + id : ''; }

@@ -680,6 +680,7 @@
         </div>
         <div style="flex:1;overflow-y:auto;padding:24px;">
 
+          <sc-if value="{{ impListMode }}" hint-placeholder-val="{{ true }}">
           <div style="margin-bottom:24px;">
             <p style="font-size:12.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);margin:0 0 10px;">Step 1 — Download the template</p>
             <div style="display:flex;align-items:center;gap:16px;padding:16px 18px;background:var(--gray-50);border:1px solid var(--border-secondary);border-radius:14px;">
@@ -764,7 +765,7 @@
                       <span>Status</span>
                     </div>
                     <sc-for list="{{ importList }}" as="emp" hint-placeholder-count="4">
-                      <div style="display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1.1fr) 110px;gap:12px;align-items:center;padding:12px 20px;border-top:1px solid var(--border-tertiary);">
+                      <div role="button" onClick="{{ emp.onView }}" style="display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1.1fr) 110px;gap:12px;align-items:center;padding:12px 20px;border-top:1px solid var(--border-tertiary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--gray-50);">
                         <div style="display:flex;align-items:center;gap:11px;min-width:0;">
                           <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:999px;background:var(--gray-100);color:var(--fg-secondary);font-weight:700;font-size:13px;">{{ emp.initials }}</span>
                           <div style="min-width:0;">
@@ -773,7 +774,7 @@
                           </div>
                         </div>
                         <span style="font-size:13.5px;color:var(--fg-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ emp.employmentType }}</span>
-                        <span><span style="display:inline-flex;align-items:center;padding:2px 9px;font-size:12px;font-weight:700;border-radius:999px;color:{{ emp.statusColor }};background:{{ emp.statusBg }};border:1px solid {{ emp.statusBorder }};">{{ emp.statusLabel }}</span></span>
+                        <span style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span style="display:inline-flex;align-items:center;padding:2px 9px;font-size:12px;font-weight:700;border-radius:999px;color:{{ emp.statusColor }};background:{{ emp.statusBg }};border:1px solid {{ emp.statusBorder }};">{{ emp.statusLabel }}</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
                       </div>
                     </sc-for>
                   </div>
@@ -782,6 +783,43 @@
             </sc-if>
 
           </div>
+          </sc-if>
+
+          <sc-if value="{{ impDetailMode }}" hint-placeholder-val="{{ false }}">
+            <span role="button" onClick="{{ impBack }}" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;margin-bottom:18px;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+              Back to list
+            </span>
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-family:var(--font-display);font-weight:800;font-size:18px;">{{ impDetailInitials }}</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ impDetailName }}</div>
+                <div style="font-size:14px;color:var(--fg-tertiary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ impDetailSub }}</div>
+              </div>
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;padding:3px 11px;font-size:12.5px;font-weight:700;border-radius:999px;color:{{ impDetailStatusColor }};background:{{ impDetailStatusBg }};border:1px solid {{ impDetailStatusBorder }};">{{ impDetailStatusLabel }}</span>
+            </div>
+            <sc-if value="{{ impDetailHasIssues }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-bottom:18px;padding:14px 18px;background:var(--warning-50);border:1px solid var(--warning-200);border-radius:12px;">
+                <div style="font-size:13.5px;font-weight:700;color:var(--warning-700);margin-bottom:6px;">Fix these in the spreadsheet, then re-upload</div>
+                <sc-for list="{{ impDetailIssues }}" as="iss" hint-placeholder-count="1">
+                  <div style="font-size:13.5px;line-height:21px;color:var(--warning-700);">{{ iss.text }}</div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-for list="{{ impDetailGroups }}" as="grp" hint-placeholder-count="2">
+              <div style="margin-bottom:16px;border:1px solid var(--border-secondary);border-radius:14px;overflow:hidden;">
+                <div style="padding:10px 18px;background:var(--gray-50);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">{{ grp.title }}</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;">
+                  <sc-for list="{{ grp.fields }}" as="fld" hint-placeholder-count="4">
+                    <div style="padding:11px 18px 13px;border-top:1px solid var(--border-tertiary);min-width:0;">
+                      <div style="font-size:12px;font-weight:600;color:var(--fg-quaternary);margin-bottom:2px;">{{ fld.label }}</div>
+                      <div style="font-size:14.5px;font-weight:600;color:{{ fld.color }};font-variant-numeric:tabular-nums;overflow-wrap:break-word;">{{ fld.value }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </sc-if>
         </div>
         <div style="flex-shrink:0;display:flex;justify-content:flex-end;gap:12px;padding:18px 24px;border-top:1px solid var(--border-secondary);background:var(--gray-50);">
           <button onClick="{{ closeImport }}" style="display:inline-flex;align-items:center;padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Cancel</button>
@@ -854,7 +892,7 @@ class Component extends DCLogic {
     modalOpen: false, importOpen: false,
     empForm: { first: '', last: '', email: '', phone: '', type: 'Full-Time-Resident', position: '', ssnit: 'yes', basic: '', tier3: '' },
     empErrors: {},
-    uploadedFile: null, uploadStatus: 'idle', importRows: [], importErrors: [], importParseError: '',
+    uploadedFile: null, uploadStatus: 'idle', importRows: [], importErrors: [], importParseError: '', importDetail: null,
     // step 3
     paOpen: false, paForm: { type: 'cash', name: '', valueMode: 'fixed', value: '', freq: 'Monthly', bik: '', reimbKind: 'expense', cap: '', applyMode: 'all', selected: [] },
     pdOpen: false, pdForm: { type: 'pretax', name: '', valueMode: 'fixed', value: '', freq: 'Monthly', applyMode: 'all', selected: [] },
@@ -959,8 +997,49 @@ class Component extends DCLogic {
     this._syncFlags();
     this.refresh();
   };
-  openImport = () => { clearTimeout(this._searchTimer); this.setState({ importOpen: true, modalOpen: false, uploadedFile: null, uploadStatus: 'idle', importRows: [], importErrors: [], importParseError: '' }); };
-  closeImport = () => { clearTimeout(this._searchTimer); this.setState({ importOpen: false }); };
+  openImport = () => { clearTimeout(this._searchTimer); this.setState({ importOpen: true, modalOpen: false, uploadedFile: null, uploadStatus: 'idle', importRows: [], importErrors: [], importParseError: '', importDetail: null }); };
+  closeImport = () => { clearTimeout(this._searchTimer); this.setState({ importOpen: false, importDetail: null }); };
+  viewImportRow = (i) => () => this.setState({ importDetail: i });
+  impBack = () => this.setState({ importDetail: null });
+  // Values for the in-modal employee preview (click a parsed row to open).
+  _importDetailVals = (s) => {
+    const di = s.importDetail;
+    const p = (di != null && s.uploadStatus === 'found' && (s.importRows || [])[di]) || null;
+    if (!p) return { impListMode: true, impDetailMode: false, impDetailGroups: [], impDetailIssues: [], impDetailHasIssues: false, impDetailName: '', impDetailInitials: '', impDetailSub: '', impDetailStatusLabel: '', impDetailStatusColor: '', impDetailStatusBg: '', impDetailStatusBorder: '' };
+    const errs = (s.importErrors && s.importErrors[di]) || [];
+    const ok = errs.length === 0;
+    const val = (v) => (v == null || String(v).trim() === '') ? null : String(v).trim();
+    const money = (v) => { const n = Number(String(v == null ? '' : v).replace(/[^0-9.]/g, '')); return (!v || isNaN(n)) ? null : 'GH\u20b5 ' + n.toLocaleString('en-GH', { minimumFractionDigits: 2 }); };
+    const F = (label, v) => ({ label, value: v == null ? '\u2014' : v, color: v == null ? 'var(--fg-quaternary)' : 'var(--fg-primary)' });
+    let ph = val(p.phone);
+    if (ph && !ph.startsWith('+')) ph = '+233 ' + ph;
+    const typeLabel = EMP_TYPE_LABELS[p.employmentType || p.type] || val(p.employmentType || p.type);
+    const ssnitV = val(p.ssnit);
+    const groups = [
+      { title: 'Contact', fields: [F('Email', val(p.email)), F('Phone number', ph)] },
+      { title: 'Employment', fields: [
+        F('Employment type', typeLabel), F('Position', val(p.position)),
+        F('Job role', val(p.jobRole)), F('Department', val(p.department)),
+        F('Basic salary', money(p.basicSalary != null && p.basicSalary !== '' ? p.basicSalary : p.basic)),
+        F('Contributes SSNIT', ssnitV ? (ssnitV.toLowerCase() === 'yes' ? 'Yes' : (ssnitV.toLowerCase() === 'no' ? 'No' : ssnitV)) : null),
+        F('Tier 3 paid', val(p.tier3Amount) ? val(p.tier3Amount) + '%' : null),
+      ] },
+      { title: 'Identity', fields: [F('Date of birth', val(p.dob)), F('Ghana Card', val(p.ghanaCard)), F('SSNIT number', val(p.ssnitNumber)), F('TIN', val(p.tin)), F('Address', val(p.address))] },
+      { title: 'Bank details', fields: [F('Bank', val(p.bankName)), F('Branch', val(p.bankBranch)), F('Account number', val(p.accountNumber)), F('Account name', val(p.accountName))] },
+      { title: 'Next of kin', fields: [F('Name', val(p.beneficiaryName)), F('Contact', val(p.beneficiaryContact)), F('Relationship', val(p.beneficiaryRelationship))] },
+    ].filter(g => g.fields.some(f => f.value !== '\u2014'));
+    return {
+      impListMode: false, impDetailMode: true,
+      impDetailName: p.name || 'Employee', impDetailInitials: p.initials || '?',
+      impDetailSub: [typeLabel, val(p.position)].filter(Boolean).join(' \u00b7 ') || 'From ' + ((s.uploadedFile && s.uploadedFile.name) || 'the uploaded file'),
+      impDetailStatusLabel: ok ? 'Ready' : 'Needs details',
+      impDetailStatusColor: ok ? 'var(--success-700)' : 'var(--warning-700)',
+      impDetailStatusBg: ok ? 'var(--success-50)' : 'var(--warning-50)',
+      impDetailStatusBorder: ok ? 'var(--success-200)' : 'var(--warning-200)',
+      impDetailHasIssues: !ok, impDetailIssues: errs.map(t => ({ text: t })),
+      impDetailGroups: groups, impBack: this.impBack,
+    };
+  };
   onFileChange = (ev) => {
     const f = ev.target && ev.target.files && ev.target.files[0];
     if (!f) return;
@@ -998,7 +1077,7 @@ class Component extends DCLogic {
     };
     this._searchTimer = setTimeout(parse, 850);
   };
-  removeFile = () => { clearTimeout(this._searchTimer); this.setState({ uploadedFile: null, uploadStatus: 'idle', importRows: [], importErrors: [], importParseError: '' }); };
+  removeFile = () => { clearTimeout(this._searchTimer); this.setState({ uploadedFile: null, uploadStatus: 'idle', importRows: [], importErrors: [], importParseError: '', importDetail: null }); };
   importEmployees = () => {
     const rows = this.state.importRows || [];
     if (!rows.length) return;
@@ -1293,8 +1372,10 @@ class Component extends DCLogic {
           statusColor: ok ? 'var(--success-700)' : 'var(--warning-700)',
           statusBg: ok ? 'var(--success-50)' : 'var(--warning-50)',
           statusBorder: ok ? 'var(--success-200)' : 'var(--warning-200)',
+          onView: this.viewImportRow(i),
         };
       }),
+      ...this._importDetailVals(s),
       hasRoster: roster.length > 0, roster, rosterCount: String(roster.length), rosterTotal: money(rosterTotalN),
 
       // step 3

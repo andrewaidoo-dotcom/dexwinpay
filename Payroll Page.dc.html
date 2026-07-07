@@ -972,12 +972,20 @@
             </div>
             <!-- scrollable register -->
             <div id="reg-hscroll-top" onScroll="{{ onRegTopScroll }}" style="overflow-x:auto;overflow-y:hidden;border-bottom:1px solid var(--border-secondary);background:var(--bg-secondary);">
-              <div style="width:1610px;height:1px;"></div>
+              <div style="width:1768px;height:1px;"></div>
             </div>
             <div id="reg-hscroll-body" onScroll="{{ onRegBodyScroll }}" style="overflow:auto;max-height:840px;">
-              <div style="min-width:1610px;">
-                <div style="display:grid;grid-template-columns:190px repeat(14,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:6;font-size:11px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:var(--fg-quaternary);">
-                  <span style="padding:13px 22px;display:flex;align-items:center;gap:12px;position:sticky;left:0;background:var(--bg-secondary);z-index:4;box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);"><span role="button" aria-label="Select all" onClick="{{ toggleSelAll }}" style="flex-shrink:0;width:18px;height:18px;border-radius:5px;border:1.5px solid {{ allCbBorder }};background:{{ allCbBg }};display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all 120ms ease;"><sc-if value="{{ allSelected }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if><sc-if value="{{ someSelected }}" hint-placeholder-val="{{ false }}"><span style="width:9px;height:2.5px;border-radius:2px;background:var(--bg-brand-solid);"></span></sc-if></span>Employee</span>
+              <div style="min-width:1768px;">
+                <div style="display:grid;grid-template-columns:230px 118px repeat(14,94px) 104px;align-items:stretch;height:34px;padding:0;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:7;font-size:11px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;">
+                  <span style="grid-column:span 2;position:sticky;left:0;background:var(--bg-secondary);z-index:4;box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);"></span>
+                  <span style="grid-column:span 5;display:flex;align-items:center;justify-content:center;padding:0 10px;border-left:1px solid var(--border-secondary);background:var(--success-25,#F6FEF9);color:var(--success-700);">Earnings</span>
+                  <span style="grid-column:span 8;display:flex;align-items:center;justify-content:center;padding:0 10px;border-left:1px solid var(--border-secondary);background:var(--error-25,#FFFBFA);color:var(--error-700);">Taxes &amp; deductions</span>
+                  <span style="display:flex;align-items:center;justify-content:center;padding:0 10px;border-left:1px solid var(--border-secondary);background:var(--brand-25,#F6FEF9);color:var(--brand-700);">Net</span>
+                  <span style="position:sticky;right:0;background:var(--bg-secondary);z-index:3;border-left:1px solid var(--border-secondary);box-shadow:-10px 0 10px -8px rgba(16,24,40,0.14);"></span>
+                </div>
+                <div style="display:grid;grid-template-columns:230px 118px repeat(14,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);position:sticky;top:34px;z-index:6;font-size:11px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:var(--fg-quaternary);">
+                  <span style="padding:13px 22px;display:flex;align-items:center;gap:12px;position:sticky;left:0;background:var(--bg-secondary);z-index:4;"><span role="button" aria-label="Select all" onClick="{{ toggleSelAll }}" style="flex-shrink:0;width:18px;height:18px;border-radius:5px;border:1.5px solid {{ allCbBorder }};background:{{ allCbBg }};display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all 120ms ease;"><sc-if value="{{ allSelected }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if><sc-if value="{{ someSelected }}" hint-placeholder-val="{{ false }}"><span style="width:9px;height:2.5px;border-radius:2px;background:var(--bg-brand-solid);"></span></sc-if></span>Employee</span>
+                  <span style="padding:0 12px;display:flex;align-items:center;position:sticky;left:230px;background:var(--bg-secondary);z-index:4;border-left:1px solid var(--border-secondary);box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);">Type</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Basic</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Tax. allow</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Non-tax</span>
@@ -995,8 +1003,8 @@
                   <span style="padding:13px 18px;display:flex;align-items:center;justify-content:flex-end;position:sticky;right:0;background:var(--bg-secondary);z-index:3;border-left:1px solid var(--border-secondary);box-shadow:-10px 0 10px -8px rgba(16,24,40,0.14);">Action</span>
                 </div>
                 <sc-for list="{{ employeesView }}" as="e" hint-placeholder-count="6">
-                  <div onClick="{{ e.onOpen }}" title="View this employee’s payroll" style="display:grid;grid-template-columns:190px repeat(14,94px) 104px;align-items:stretch;padding:0;border-bottom:1px solid var(--border-tertiary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
-                    <div style="display:flex;align-items:center;gap:11px;min-width:0;padding:14px 22px;position:sticky;left:0;background:#fff;z-index:2;box-shadow:10px 0 10px -8px rgba(16,24,40,0.08);">
+                  <div onClick="{{ e.onOpen }}" title="View this employee’s payroll" style="display:grid;grid-template-columns:230px 118px repeat(14,94px) 104px;align-items:stretch;padding:0;border-bottom:1px solid var(--border-tertiary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
+                    <div style="display:flex;align-items:center;gap:11px;min-width:0;padding:14px 22px;position:sticky;left:0;background:#fff;z-index:2;">
                       <span role="button" aria-label="Select employee" onClick="{{ e.onToggle }}" style="flex-shrink:0;width:18px;height:18px;border-radius:5px;border:1.5px solid {{ e.cbBorder }};background:{{ e.cbBg }};display:inline-flex;align-items:center;justify-content:center;cursor:{{ e.cbCursor }};transition:all 120ms ease;"><sc-if value="{{ e.selected }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></span>
                       <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-weight:700;font-size:13px;">{{ e.initials }}</span>
                       <div style="min-width:0;">
@@ -1004,6 +1012,7 @@
                         <div style="font-size:12px;color:var(--fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.role }}</div>
                       </div>
                     </div>
+                    <span style="padding:0 12px;display:flex;align-items:center;position:sticky;left:230px;background:#fff;z-index:2;border-left:1px solid var(--border-secondary);box-shadow:10px 0 10px -8px rgba(16,24,40,0.08);min-width:0;"><span style="min-width:0;font-size:13px;font-weight:600;color:var(--fg-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.etype }}</span></span>
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ e.basic }}</span>
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--success-700);font-variant-numeric:tabular-nums;">{{ e.taxAllow }}</span>
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--success-700);font-variant-numeric:tabular-nums;">{{ e.nonTax }}</span>
@@ -1028,8 +1037,9 @@
                 <sc-if value="{{ employeesEmpty }}" hint-placeholder-val="{{ false }}">
                   <div style="padding:40px 22px;text-align:center;font-size:14.5px;color:var(--fg-tertiary);">No employees match “{{ empSearch }}”.</div>
                 </sc-if>
-                <div style="display:grid;grid-template-columns:190px repeat(14,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);font-size:13px;font-weight:700;color:var(--fg-primary);position:sticky;bottom:0;z-index:5;border-top:1px solid var(--border-secondary);box-shadow:0 -10px 12px -8px rgba(16,24,40,0.12);">
-                  <span style="padding:14px 22px;display:flex;align-items:center;position:sticky;left:0;background:var(--bg-secondary);z-index:2;box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);">Totals</span>
+                <div style="display:grid;grid-template-columns:230px 118px repeat(14,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);font-size:13px;font-weight:700;color:var(--fg-primary);position:sticky;bottom:0;z-index:5;border-top:1px solid var(--border-secondary);box-shadow:0 -10px 12px -8px rgba(16,24,40,0.12);">
+                  <span style="padding:14px 22px;display:flex;align-items:center;position:sticky;left:0;background:var(--bg-secondary);z-index:2;">Totals</span>
+                  <span style="position:sticky;left:230px;background:var(--bg-secondary);z-index:2;border-left:1px solid var(--border-secondary);box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);"></span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.basic }}</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.taxAllow }}</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.nonTax }}</span>
@@ -1829,8 +1839,24 @@
 function rosterReg() {
   var list = (window.AppState && window.AppState.getEmployees) ? window.AppState.getEmployees() : [];
   return list.map(function (r) {
-    return { id: r.id, name: r.name, initials: r.initials, role: r.jobRole || r.position || '\u2014', department: r.department || '', position: r.position || '', bankName: r.bankName || '', branch: r.bankBranch || '', acct: r.accountNumber || '' };
+    return { id: r.id, name: r.name, initials: r.initials, role: r.jobRole || r.position || '\u2014', department: r.department || '', position: r.position || '', bankName: r.bankName || '', branch: r.bankBranch || '', acct: r.accountNumber || '', etype: r.employmentType || 'Full-Time-Resident' };
   });
+}
+// Short employment-type label for the register's Type column.
+function typeLabel(t) {
+  var k = String(t || '').toLowerCase();
+  var MAP = {
+    'full-time-resident': 'Full-time',
+    'resident-part-time-resident': 'Part-time',
+    'part-time-resident': 'Part-time',
+    'casual-resident': 'Casual',
+    'independent contractor': 'Contractor',
+    'contractor-full-time': 'Contractor (FT)',
+    'nss': 'NSS',
+    'intern': 'Intern',
+    'non-resident': 'Non-resident',
+  };
+  return MAP[k] || String(t || '\u2014').replace(/-/g, ' ');
 }
 const BANKS = ['GCB Bank', 'Stanbic Bank', 'Ecobank', 'Fidelity Bank', 'Standard Chartered', 'Absa Bank', 'CalBank', 'Zenith Bank', 'UBA Ghana', 'Access Bank'];
 function buildPeriods() {
@@ -2040,6 +2066,16 @@ class Component extends DCLogic {
     if (flash) setTimeout(() => this.showToast(flash), 360);
     try { if (window.AppState && window.AppState.getLoans) { const ln = window.AppState.getLoans(); if (ln && ln.length) this.setState({ loans: ln }); } } catch (e) {}
     try { const r = localStorage.getItem(this._draftsKey()); if (r) this.setState({ drafts: JSON.parse(r) }); } catch (e) {}
+    // Deep link: ?period=<periodId> jumps straight into that month's run (draft if one exists).
+    try {
+      const pid = new URLSearchParams(window.location.search).get('period');
+      if (pid) setTimeout(() => {
+        const d = (this.state.drafts || []).find(x => x.periodId === pid);
+        if (d) { this.resumeDraft(d.id)(); return; }
+        const p = PERIODS.find(x => x.id === pid);
+        if (p) this.pickPeriod(p)();
+      }, 150);
+    } catch (e) {}
     const loadOwner = () => {
       if (!window.AppState || !window.AppState.getAccount) return false;
       const ac = window.AppState.getAccount();
@@ -2665,6 +2701,7 @@ class Component extends DCLogic {
       const selectable = !isPaid;
       return {
         id: e.id, initials: e.initials, name: e.name, role: e.role,
+        etype: typeLabel(e.etype),
         selected: isSel,
         cbBg: !selectable ? 'var(--gray-100)' : (isSel ? 'var(--bg-brand-solid)' : '#fff'),
         cbBorder: !selectable ? 'var(--border-secondary)' : (isSel ? 'var(--bg-brand-solid)' : 'var(--border-primary)'),
